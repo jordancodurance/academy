@@ -22,13 +22,20 @@ public class ThrowScoreCalculator {
     private static int calculateStrikeScore(char[] recordedThrows, int trackedCurrentThrow) {
         if (isLastFrame(recordedThrows, trackedCurrentThrow)) return MAXIMUM_PINS;
 
-        int nextThrowScore = calculateThrowScore(recordedThrows, trackedCurrentThrow + 1);
+        int trackedNextThrow = trackedCurrentThrow + 1;
+        char nextThrow = recordedThrows[trackedNextThrow];
+        if (nextThrow == STRIKE.symbol) return MAXIMUM_PINS;
 
-        return MAXIMUM_PINS + nextThrowScore;
+        int nextThrowScore = calculateThrowScore(recordedThrows, trackedCurrentThrow + 1);
+        int trackedSucceedingNextThrow = trackedNextThrow + 1;
+        int succeedingNextThrow = recordedThrows[trackedSucceedingNextThrow];
+        if (succeedingNextThrow == SPARE.symbol) return MAXIMUM_PINS + nextThrowScore + (MAXIMUM_PINS - nextThrowScore);
+
+        return MAXIMUM_PINS + nextThrowScore + calculateThrowScore(recordedThrows, trackedSucceedingNextThrow);
     }
 
     private static boolean isLastFrame(char[] recordedThrows, int trackedCurrentThrow) {
-        return recordedThrows.length == trackedCurrentThrow + 1;
+        return recordedThrows.length - 1 == trackedCurrentThrow;
     }
 
     public static int calculateSpareScore(char[] recordedThrows, int trackedCurrentThrow) {
