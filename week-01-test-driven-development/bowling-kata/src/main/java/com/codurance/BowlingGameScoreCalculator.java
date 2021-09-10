@@ -16,31 +16,37 @@ public class BowlingGameScoreCalculator {
         int score = 0;
         int roll = 0;
         for (int frame = 0; frame < NUMBER_OF_FRAMES; frame++) {
-            String pins = unformattedGame.substring(roll, roll + 1);
-            String secondPins = unformattedGame.substring(roll + 1, roll + 2);
-            if (secondPins.equals("/")) {
-                score += calculateSpareScore(roll, unformattedGame);
-                roll += 2;
-            } else if (pins.equals("X")) {
-                score += calculateStrikeScore(roll, unformattedGame);
+            if (isStrikeFrame(roll, unformattedGame)) {
+                score += calculateStrikeFrameScore(roll, unformattedGame);
                 roll++;
+            } else if (isSpareFrame(roll, unformattedGame)) {
+                score += calculateSpareFrameScore(roll, unformattedGame);
+                roll += 2;
             } else {
-                score += calculateFrameScore(roll, unformattedGame);
+                score += calculateNormalFrameScore(roll, unformattedGame);
                 roll += 2;
             }
         }
         return score;
     }
 
-    private int calculateSpareScore(int roll, String game) {
-        return PINS_PER_ROLL + calculateRollScore(roll + 2, game);
+    private boolean isStrikeFrame(int roll, String game) {
+        return game.substring(roll, roll + 1).equals(STRIKE.symbol);
     }
 
-    private int calculateStrikeScore(int roll, String game) {
+    private int calculateStrikeFrameScore(int roll, String game) {
         return PINS_PER_ROLL + calculateRollScore(roll + 1, game) + calculateRollScore(roll + 2, game);
     }
 
-    private int calculateFrameScore(int roll, String game) {
+    private boolean isSpareFrame(int roll, String game) {
+        return game.substring(roll + 1, roll + 2).equals(SPARE.symbol);
+    }
+
+    private int calculateSpareFrameScore(int roll, String game) {
+        return PINS_PER_ROLL + calculateRollScore(roll + 2, game);
+    }
+
+    private int calculateNormalFrameScore(int roll, String game) {
         return calculateRollScore(roll, game) + calculateRollScore(roll + 1, game);
     }
 
@@ -49,17 +55,13 @@ public class BowlingGameScoreCalculator {
         if (pins.equals(STRIKE.symbol)) {
             return PINS_PER_ROLL;
         } else if (pins.equals(SPARE.symbol)) {
-            return PINS_PER_ROLL - getPreviousRollScore(roll, game);
+            String previousPins = game.substring(roll - 1, roll);
+            return PINS_PER_ROLL - parseInt(previousPins);
         } else if (pins.equals(MISS.symbol)) {
             return 0;
         }
 
         return parseInt(pins);
-    }
-
-    private int getPreviousRollScore(int roll, String game) {
-        String previousPins = game.substring(roll - 1, roll);
-        return parseInt(previousPins);
     }
 
 }
