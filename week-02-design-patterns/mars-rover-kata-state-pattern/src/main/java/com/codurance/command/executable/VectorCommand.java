@@ -11,5 +11,5 @@ public abstract class VectorCommand {
     }
 
     public abstract Position execute();
-    
+
 }

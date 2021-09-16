@@ -1,10 +1,10 @@
 package com.codurance.command.executable;
 
+import com.codurance.landscape.Coordinate;
 import com.codurance.landscape.Grid;
 import com.codurance.landscape.Obstacle;
 import com.codurance.landscape.ObstacleEncounteredException;
 import com.codurance.landscape.Position;
-import com.codurance.landscape.Coordinate;
 
 import static java.lang.String.format;
 

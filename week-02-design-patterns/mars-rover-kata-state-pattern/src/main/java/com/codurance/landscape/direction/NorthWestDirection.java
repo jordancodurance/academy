@@ -1,9 +1,11 @@
 package com.codurance.landscape.direction;
 
 import com.codurance.landscape.Coordinate;
+
 import static com.codurance.landscape.direction.CompassDirection.NORTHWEST;
 
 public class NorthWestDirection extends Direction {
+
     @Override
     public CompassDirection getCompass() {
         return NORTHWEST;
@@ -26,4 +28,5 @@ public class NorthWestDirection extends Direction {
                 currentCoordinate.getNextYAxis()
         );
     }
+
 }

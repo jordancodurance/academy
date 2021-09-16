@@ -4,7 +4,10 @@ import com.codurance.command.requested.RequestedCommand;
 import com.codurance.landscape.Grid;
 import com.codurance.landscape.Position;
 
-import static com.codurance.command.requested.RequestedCommand.*;
+import static com.codurance.command.requested.RequestedCommand.LEFT;
+import static com.codurance.command.requested.RequestedCommand.MOVE;
+import static com.codurance.command.requested.RequestedCommand.RIGHT;
+import static java.lang.String.format;
 
 public class ExecutableCommandFactory {
 
@@ -21,7 +24,7 @@ public class ExecutableCommandFactory {
             return new MoveCommand(position, grid);
         }
 
-        throw new UnhandledExecutableCommandCreationException(String.format("Unhandled executable command creation: %s", requestedCommand.input));
+        throw new UnhandledExecutableCommandCreationException(format("Unhandled executable command creation: %s", requestedCommand.input));
     }
 
 }

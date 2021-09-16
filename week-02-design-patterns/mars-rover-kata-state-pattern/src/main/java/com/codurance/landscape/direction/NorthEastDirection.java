@@ -4,7 +4,7 @@ import com.codurance.landscape.Coordinate;
 
 import static com.codurance.landscape.direction.CompassDirection.NORTHEAST;
 
-public class NorthEastDirection extends Direction{
+public class NorthEastDirection extends Direction {
 
     @Override
     public CompassDirection getCompass() {
@@ -28,4 +28,5 @@ public class NorthEastDirection extends Direction{
                 currentCoordinate.getNextYAxis()
         );
     }
+
 }

@@ -1,9 +1,11 @@
 package com.codurance.landscape.direction;
 
 import com.codurance.landscape.Coordinate;
+
 import static com.codurance.landscape.direction.CompassDirection.SOUTHEAST;
 
-public class SouthEastDirection extends Direction{
+public class SouthEastDirection extends Direction {
+
     @Override
     public CompassDirection getCompass() {
         return SOUTHEAST;
@@ -26,4 +28,5 @@ public class SouthEastDirection extends Direction{
                 currentCoordinate.getPreviousYAxis()
         );
     }
+
 }
