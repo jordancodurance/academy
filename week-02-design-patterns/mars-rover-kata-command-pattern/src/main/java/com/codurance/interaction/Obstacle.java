@@ -1,4 +1,4 @@
-package com.codurance.model;
+package com.codurance.interaction;
 
 public class Obstacle extends Coordinate {
 

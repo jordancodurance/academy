@@ -1,7 +1,7 @@
 import com.codurance.Rover;
-import com.codurance.error.UnknownCommandException;
-import com.codurance.model.Grid;
-import com.codurance.model.Obstacle;
+import com.codurance.command.requested.UnknownRequestedCommandException;
+import com.codurance.interaction.Grid;
+import com.codurance.interaction.Obstacle;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -75,7 +75,7 @@ public class RoverShould {
 
     @Test void
     reject_unknown_command() {
-        UnknownCommandException exception = assertThrows(UnknownCommandException.class, () -> target.execute("X"));
+        UnknownRequestedCommandException exception = assertThrows(UnknownRequestedCommandException.class, () -> target.execute("X"));
 
         assertEquals("Unknown command X, allowed commands are only L, R, M", exception.getMessage());
     }

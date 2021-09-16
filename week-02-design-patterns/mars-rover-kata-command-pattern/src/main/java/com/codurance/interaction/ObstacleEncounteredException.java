@@ -1,4 +1,4 @@
-package com.codurance.error;
+package com.codurance.interaction;
 
 public class ObstacleEncounteredException extends RuntimeException {
 

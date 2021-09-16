@@ -1,6 +1,4 @@
-package com.codurance.model;
-
-import static com.codurance.model.Direction.NORTH;
+package com.codurance.interaction;
 
 public class Position {
 

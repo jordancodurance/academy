@@ -1,4 +1,4 @@
-package com.codurance.model;
+package com.codurance.command.requested;
 
 public enum RequestedCommand {
 
