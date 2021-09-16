@@ -1,7 +1,7 @@
 package com.codurance.service;
 
 import com.codurance.error.UnknownCommandException;
-import com.codurance.model.Command;
+import com.codurance.model.RequestedCommand;
 
 import java.util.Arrays;
 import java.util.List;
@@ -10,19 +10,19 @@ import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 
-public class CommandParser {
+public class RequestedCommandParser {
 
-    public static List<Command> parseKnownCommands(String command) throws UnknownCommandException {
+    public static List<RequestedCommand> parseKnownRequestedCommands(String command) throws UnknownCommandException {
         return Arrays
                 .stream(command.split(""))
-                .map(CommandParser::findKnownCommand)
+                .map(RequestedCommandParser::findKnownRequestedCommand)
                 .collect(toList());
     }
 
-    private static Command findKnownCommand(String character) throws UnknownCommandException {
-        List<Command> knownCommands = asList(Command.values());
+    private static RequestedCommand findKnownRequestedCommand(String character) throws UnknownCommandException {
+        List<RequestedCommand> knownRequestedCommands = asList(RequestedCommand.values());
 
-        return knownCommands
+        return knownRequestedCommands
                 .stream()
                 .filter(value -> value.input.equals(character))
                 .findFirst()

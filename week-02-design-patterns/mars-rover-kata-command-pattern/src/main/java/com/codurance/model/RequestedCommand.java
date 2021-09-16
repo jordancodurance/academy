@@ -1,6 +1,6 @@
 package com.codurance.model;
 
-public enum Command {
+public enum RequestedCommand {
 
     LEFT("L"),
     RIGHT("R"),
@@ -8,7 +8,7 @@ public enum Command {
 
     public final String input;
 
-    Command(String input) {
+    RequestedCommand(String input) {
         this.input = input;
     }
 

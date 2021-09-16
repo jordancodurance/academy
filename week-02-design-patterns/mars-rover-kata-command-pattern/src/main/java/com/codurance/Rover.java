@@ -6,11 +6,11 @@ import com.codurance.service.VectorResolver;
 
 import java.util.List;
 
-import static com.codurance.model.Command.LEFT;
-import static com.codurance.model.Command.MOVE;
-import static com.codurance.model.Command.RIGHT;
+import static com.codurance.model.RequestedCommand.LEFT;
+import static com.codurance.model.RequestedCommand.MOVE;
+import static com.codurance.model.RequestedCommand.RIGHT;
 import static com.codurance.model.Direction.NORTH;
-import static com.codurance.service.CommandParser.parseKnownCommands;
+import static com.codurance.service.RequestedCommandParser.parseKnownRequestedCommands;
 import static java.lang.String.format;
 
 public class Rover {
@@ -32,18 +32,18 @@ public class Rover {
     }
 
     private String attemptCommandExecution(String command) throws ObstacleEncounteredException {
-        List<Command> parsedCommands = parseKnownCommands(command);
-        for (Command parsedCommand : parsedCommands) {
+        List<RequestedCommand> requestedCommands = parseKnownRequestedCommands(command);
+        for (RequestedCommand requestedCommand : requestedCommands) {
             Direction currentDirection = position.direction;
             Coordinate currentCoordinate = position.coordinate;
 
-            if (parsedCommand == RIGHT)
+            if (requestedCommand == RIGHT)
                 position = new Position(vectorResolver.resolveNextRightRotation(currentDirection), currentCoordinate);
 
-            if (parsedCommand == LEFT)
+            if (requestedCommand == LEFT)
                 position = new Position(vectorResolver.resolveNextLeftRotation(currentDirection), currentCoordinate);
 
-            if (parsedCommand == MOVE)
+            if (requestedCommand == MOVE)
                 position = new Position(currentDirection, vectorResolver.resolveNextCoordinate(currentCoordinate, currentDirection));
         }
 
