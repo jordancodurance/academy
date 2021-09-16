@@ -16,11 +16,15 @@ public class RoverShould {
 
     @ParameterizedTest
     @CsvSource({
-            "R, 0:0:E",
-            "RR, 0:0:S",
-            "RRR, 0:0:W",
-            "RRRR, 0:0:N",
-            "RRRRR, 0:0:E"
+            "R, 0:0:NE",
+            "RR, 0:0:E",
+            "RRR, 0:0:SE",
+            "RRRR, 0:0:S",
+            "RRRRR, 0:0:SW",
+            "RRRRRR, 0:0:W",
+            "RRRRRRR, 0:0:NW",
+            "RRRRRRRR, 0:0:N",
+
     })
     void rotate_right(String command, String expectedOutput) {
         assertEquals(expectedOutput, target.execute(command));
@@ -28,11 +32,14 @@ public class RoverShould {
 
     @ParameterizedTest
     @CsvSource({
-            "L, 0:0:W",
-            "LL, 0:0:S",
-            "LLL, 0:0:E",
-            "LLLL, 0:0:N",
-            "LLLLL, 0:0:W"
+            "L, 0:0:NW",
+            "LL, 0:0:W",
+            "LLL, 0:0:SW",
+            "LLLL, 0:0:S",
+            "LLLLL, 0:0:SE",
+            "LLLLLL, 0:0:E",
+            "LLLLLLL, 0:0:NE",
+            "LLLLLLLL, 0:0:N"
     })
     void rotate_left(String command, String expectedOutput) {
         assertEquals(expectedOutput, target.execute(command));
@@ -41,7 +48,7 @@ public class RoverShould {
     @ParameterizedTest
     @CsvSource({
             "M, 0:1:N",
-            "RRM, 0:9:S"
+            "RRM, 1:0:E"
     })
     void move_latitudinally(String command, String expectedOutput) {
         assertEquals(expectedOutput, target.execute(command));
@@ -49,10 +56,21 @@ public class RoverShould {
 
     @ParameterizedTest
     @CsvSource({
-            "LM, 9:0:W",
-            "RM, 1:0:E"
+            "LLM, 9:0:W",
+            "RRM, 1:0:E"
     })
     void move_longitudinally(String command, String expectedOutput) {
+        assertEquals(expectedOutput, target.execute(command));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "RM, 1:1:NE",
+            "LM, 9:1:NW",
+            "RRRM, 1:9:SE",
+            "LLLM, 9:9:SW"
+    })
+    void move_diagonally(String command, String expectedOutput) {
         assertEquals(expectedOutput, target.execute(command));
     }
 
@@ -66,7 +84,7 @@ public class RoverShould {
 
     @ParameterizedTest
     @CsvSource({
-            "MMRMMLM, 2:3:N",
+            "MMRMMLM, 2:5:N",
             "MMMMMMMMMM, 0:0:N"
     })
     void execute_complex_command(String command, String expectedOutput) {

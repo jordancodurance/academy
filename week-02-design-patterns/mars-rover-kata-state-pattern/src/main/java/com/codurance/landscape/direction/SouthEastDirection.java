@@ -1,32 +1,29 @@
 package com.codurance.landscape.direction;
 
 import com.codurance.landscape.Coordinate;
+import static com.codurance.landscape.direction.CompassDirection.SOUTHEAST;
 
-import static com.codurance.landscape.direction.CompassDirection.SOUTH;
-
-public class SouthDirection extends Direction {
-
+public class SouthEastDirection extends Direction{
     @Override
     public CompassDirection getCompass() {
-        return SOUTH;
+        return SOUTHEAST;
     }
 
     @Override
     public Direction rotateLeft() {
-        return new SouthEastDirection();
+        return new EastDirection();
     }
 
     @Override
     public Direction rotateRight() {
-        return new SouthWestDirection();
+        return new SouthDirection();
     }
 
     @Override
     public Coordinate move(Coordinate currentCoordinate) {
         return new Coordinate(
-                currentCoordinate.x,
+                currentCoordinate.getNextXAxis(),
                 currentCoordinate.getPreviousYAxis()
         );
     }
-
 }

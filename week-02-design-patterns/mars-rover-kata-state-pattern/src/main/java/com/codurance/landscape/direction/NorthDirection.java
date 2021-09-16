@@ -1,7 +1,6 @@
 package com.codurance.landscape.direction;
 
 import com.codurance.landscape.Coordinate;
-import com.codurance.landscape.Grid;
 
 import static com.codurance.landscape.direction.CompassDirection.NORTH;
 
@@ -14,19 +13,20 @@ public class NorthDirection extends Direction {
 
     @Override
     public Direction rotateLeft() {
-        return new WestDirection();
+        return new NorthWestDirection();
     }
 
     @Override
     public Direction rotateRight() {
-        return new EastDirection();
+        return new NorthEastDirection();
     }
 
     @Override
     public Coordinate move(Coordinate currentCoordinate) {
-        int currentY = currentCoordinate.y;
-        int nextY = incrementWithinRange(currentY, Grid.BOUNDARY);
-        return new Coordinate(currentCoordinate.x, nextY);
+        return new Coordinate(
+                currentCoordinate.x,
+                currentCoordinate.getNextYAxis()
+        );
     }
 
 }

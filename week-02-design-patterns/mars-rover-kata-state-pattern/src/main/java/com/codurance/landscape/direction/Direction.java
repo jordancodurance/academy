@@ -12,12 +12,4 @@ public abstract class Direction {
 
     public abstract Coordinate move(Coordinate currentCoordinate);
 
-    protected int decrementWithinRange(int value, int range) {
-        return (value - 1 + range) % range;
-    }
-
-    protected int incrementWithinRange(int value, int range) {
-        return (value + 1) % range;
-    }
-
 }
