@@ -1,6 +1,7 @@
 package com.codurance;
 
 import com.codurance.basket.Basket;
+import com.codurance.basket.BasketFactory;
 import com.codurance.basket.BasketItem;
 import com.codurance.basket.BasketRepository;
 import com.codurance.product.ProductRepository;
@@ -20,7 +21,8 @@ import static org.mockito.Mockito.mock;
 public class ShoppingBasketServiceShould {
 
     private final TimestampProvider timestampProvider = mock(TimestampProvider.class);
-    private final BasketRepository basketRepository = new BasketRepository(timestampProvider);
+    private final BasketFactory basketFactory = new BasketFactory(timestampProvider);
+    private final BasketRepository basketRepository = new BasketRepository(basketFactory);
     private final ProductRepository productRepository = new ProductRepository();
 
     private final ShoppingBasketService shoppingBasketService = new ShoppingBasketService(basketRepository, productRepository);
