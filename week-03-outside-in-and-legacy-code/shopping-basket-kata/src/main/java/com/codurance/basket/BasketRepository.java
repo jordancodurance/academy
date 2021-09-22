@@ -7,18 +7,24 @@ public class BasketRepository {
 
     private final BasketFactory basketFactory;
 
+    private final HashMap<UUID, Basket> basketStore = new HashMap<>();
+
     public BasketRepository(BasketFactory basketFactory) {
         this.basketFactory = basketFactory;
     }
 
-    private final HashMap<UUID, Basket> basketStore = new HashMap<>();
+    public Basket getBasket(UUID userId) {
+        Basket basket = basketStore.get(userId);
+        if (basket == null) {
+            basket = basketFactory.createNewBasket(userId);
+            basketStore.put(userId, basket);
+        }
 
-    public Basket findBasket(UUID userId) {
-        return basketStore.getOrDefault(userId, basketFactory.createNewBasket());
+        return basket;
     }
 
     public void addToBasket(UUID userId, BasketItem basketItem) {
-        Basket basket = findBasket(userId);
+        Basket basket = getBasket(userId);
         basket.items.add(basketItem);
 
         basketStore.put(userId, basket);
