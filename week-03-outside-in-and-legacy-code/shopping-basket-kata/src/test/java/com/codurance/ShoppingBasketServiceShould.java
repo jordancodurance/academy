@@ -4,6 +4,7 @@ import com.codurance.basket.Basket;
 import com.codurance.basket.BasketFactory;
 import com.codurance.basket.BasketItem;
 import com.codurance.basket.BasketRepository;
+import com.codurance.product.ProductNotFoundException;
 import com.codurance.product.ProductRepository;
 import com.codurance.time.TimestampProvider;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import java.util.UUID;
 import static java.util.List.of;
 import static java.util.UUID.fromString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -28,7 +30,24 @@ public class ShoppingBasketServiceShould {
     private final ShoppingBasketService shoppingBasketService = new ShoppingBasketService(basketRepository, productRepository);
 
     @Test
-    public void addItemsToShoppingBasket() {
+    void prevent_adding_item_for_product_that_does_not_exist() {
+        UUID userId = fromString("f62dc4a8-3701-4dfa-85cd-258b83607a84");
+        UUID productId = fromString("a07a6b3e-1e07-4077-a416-6c96360b537f");
+
+        ProductNotFoundException exception = assertThrows(
+                ProductNotFoundException.class,
+                () -> shoppingBasketService.addItem(userId, productId, 1)
+        );
+
+        assertEquals(
+                "Unable to find product with id: a07a6b3e-1e07-4077-a416-6c96360b537f",
+                exception.getMessage()
+        );
+    }
+
+    @Test
+    void
+    add_items_to_basket() {
         given(timestampProvider.now()).willReturn(LocalDateTime.of(2021, 9, 21, 12, 34));
         UUID userId = fromString("f62dc4a8-3701-4dfa-85cd-258b83607a84");
         UUID hobbitProductId = fromString("dface31e-badf-4df6-a32c-cd0d830b3027");
@@ -54,10 +73,10 @@ public class ShoppingBasketServiceShould {
 
     private void assertBasketItemsMatch(List<BasketItem> expected, List<BasketItem> actual) {
         for (int i = 0; i < actual.size() - 1; i++)
-            hasBasketItem(expected.get(i), actual.get(i));
+            assertBasketItemContentMatch(expected.get(i), actual.get(i));
     }
 
-    private void hasBasketItem(BasketItem expected, BasketItem actual) {
+    private void assertBasketItemContentMatch(BasketItem expected, BasketItem actual) {
         assertEquals(expected.quantity, actual.quantity);
         assertEquals(expected.name, actual.name);
         assertEquals(expected.price, actual.price);
