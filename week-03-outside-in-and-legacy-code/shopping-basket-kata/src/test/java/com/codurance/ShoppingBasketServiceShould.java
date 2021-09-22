@@ -27,7 +27,7 @@ public class ShoppingBasketServiceShould {
     private final BasketRepository basketRepository = new BasketRepository(basketFactory);
     private final ProductRepository productRepository = new ProductRepository();
 
-    private final ShoppingBasketService shoppingBasketService = new ShoppingBasketService(basketRepository, productRepository);
+    private final ShoppingBasketService target = new ShoppingBasketService(basketRepository, productRepository);
 
     @Test
     void prevent_adding_item_for_product_that_does_not_exist() {
@@ -36,7 +36,7 @@ public class ShoppingBasketServiceShould {
 
         ProductNotFoundException exception = assertThrows(
                 ProductNotFoundException.class,
-                () -> shoppingBasketService.addItem(userId, productId, 1)
+                () -> target.addItem(userId, productId, 1)
         );
 
         assertEquals(
@@ -52,10 +52,10 @@ public class ShoppingBasketServiceShould {
         UUID userId = fromString("f62dc4a8-3701-4dfa-85cd-258b83607a84");
         UUID hobbitProductId = fromString("dface31e-badf-4df6-a32c-cd0d830b3027");
         UUID breakingBadProductId = fromString("826373df-8668-4daf-a87c-1717ee1327c6");
-        shoppingBasketService.addItem(userId, hobbitProductId, 2);
-        shoppingBasketService.addItem(userId, breakingBadProductId, 5);
+        target.addItem(userId, hobbitProductId, 2);
+        target.addItem(userId, breakingBadProductId, 5);
 
-        Basket basket = shoppingBasketService.basketFor(userId);
+        Basket basket = target.basketFor(userId);
 
         assertBasketHasExpectedContent(basket);
     }
@@ -72,7 +72,7 @@ public class ShoppingBasketServiceShould {
     }
 
     private void assertBasketItemsMatch(List<BasketItem> expected, List<BasketItem> actual) {
-        for (int i = 0; i < actual.size() - 1; i++)
+        for (int i = 0; i < expected.size() - 1; i++)
             assertBasketItemContentMatch(expected.get(i), actual.get(i));
     }
 
