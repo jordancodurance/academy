@@ -2,9 +2,14 @@ package com.codurance.basket;
 
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.logging.Logger;
+
+import static java.lang.String.format;
+import static java.util.logging.Logger.getLogger;
 
 public class BasketRepository {
 
+    private final Logger logger = getLogger(this.getClass().getName());
     private final BasketFactory basketFactory;
 
     private final HashMap<UUID, Basket> basketStore = new HashMap<>();
@@ -13,20 +18,22 @@ public class BasketRepository {
         this.basketFactory = basketFactory;
     }
 
-    public Basket getBasket(UUID userId) {
+    public Basket findExistingBasket(UUID userId) {
         Basket basket = basketStore.get(userId);
-        if (basket == null) {
-            basket = basketFactory.createNewBasket(userId);
-            basketStore.put(userId, basket);
-        }
+        if (basket == null) throw new BasketNotFoundException();
 
         return basket;
     }
 
-    public void addToBasket(UUID userId, BasketItem basketItem) {
-        Basket basket = getBasket(userId);
-        basket.items.add(basketItem);
+    public Basket createNewBasket(UUID userId) {
+        Basket basket = basketFactory.createNewBasket();
+        basketStore.put(userId, basket);
+        logger.info(format("[BASKET CREATED]: Created[<%s>], User[%s]", basket.createdOn, userId));
 
+        return basket;
+    }
+
+    public void updateBasket(UUID userId, Basket basket) {
         basketStore.put(userId, basket);
     }
 

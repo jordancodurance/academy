@@ -17,6 +17,7 @@ import static java.util.List.of;
 import static java.util.UUID.fromString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -45,6 +46,18 @@ public class ShoppingBasketServiceShould {
         );
     }
 
+    @Test void
+    create_an_empty_basket_for_new_users() {
+        given(timestampProvider.now()).willReturn(LocalDateTime.of(2021, 9, 28, 9, 12));
+        UUID newUserId = UUID.randomUUID();
+
+        Basket basket = target.basketFor(newUserId);
+
+        assertEquals("28/09/2021", basket.getFormattedDate());
+        assertTrue(basket.items.isEmpty());
+        assertEquals(0.00, basket.calculateTotal());
+    }
+
     @Test
     void
     add_items_to_basket() {
@@ -57,10 +70,10 @@ public class ShoppingBasketServiceShould {
 
         Basket basket = target.basketFor(userId);
 
-        assertBasketHasExpectedContent(basket);
+        assertBasketHasAddedContent(basket);
     }
 
-    private void assertBasketHasExpectedContent(Basket basket) {
+    private void assertBasketHasAddedContent(Basket basket) {
         List<BasketItem> expectedItems = of(
                 new BasketItem(2, "The Hobbit", 5.00),
                 new BasketItem(5, "Breaking Bad", 7.00)
