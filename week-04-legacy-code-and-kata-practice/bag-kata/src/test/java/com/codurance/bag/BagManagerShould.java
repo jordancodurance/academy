@@ -29,9 +29,9 @@ class BagManagerShould {
     }
 
     @Test
-    void return_backpack_identifier_for_next_available_bag_when_under_capacity() {
+    void return_current_bag_when_bag_under_capacity() {
         BagIdentifier backpackIdentifier = new BagIdentifier(100);
-        Bag backpack = createBagWithCapacity(backpackIdentifier, 7);
+        Bag backpack = createBagWithCapacity(backpackIdentifier, 4, 3);
         List<Bag> bags = of(backpack);
 
         BagIdentifier nextAvailableBagIdentifier = target.getNextAvailableBag(bags);
@@ -40,22 +40,9 @@ class BagManagerShould {
     }
 
     @Test
-    void return_new_created_bag_identifier_when_backpack_at_capacity() {
-        BagIdentifier backpackIdentifier = new BagIdentifier(100);
-        Bag backpack = createBagWithCapacity(backpackIdentifier, 8);
-        List<Bag> bags = of(backpack);
-        BagIdentifier newBagIdentifier = new BagIdentifier(101);
-        given(bagRepository.addExtraBag(MISCELLANEOUS)).willReturn(newBagIdentifier);
-
-        BagIdentifier nextAvailableBagIdentifier = target.getNextAvailableBag(bags);
-
-        assertEquals(newBagIdentifier, nextAvailableBagIdentifier);
-    }
-
-    @Test
-    void return_new_created_bag_when_extra_bag_at_capacity() {
+    void return_new_created_bag_when_current_bag_at_capacity() {
         BagIdentifier nonBackpackIdentifier = new BagIdentifier(101);
-        Bag extraBag = createBagWithCapacity(nonBackpackIdentifier, 4);
+        Bag extraBag = createBagWithCapacity(nonBackpackIdentifier, 4, 4);
         List<Bag> bags = of(extraBag);
         BagIdentifier newBagIdentifier = new BagIdentifier(102);
         given(bagRepository.addExtraBag(MISCELLANEOUS)).willReturn(newBagIdentifier);
@@ -65,9 +52,9 @@ class BagManagerShould {
         assertEquals(newBagIdentifier, nextAvailableBagIdentifier);
     }
 
-    private Bag createBagWithCapacity(BagIdentifier bagIdentifier, int capacity) {
-        Bag bag = new Bag(bagIdentifier, MISCELLANEOUS, capacity);
-        for (int i = 0; i < capacity; i++) {
+    private Bag createBagWithCapacity(BagIdentifier bagIdentifier, int maxCapacity, int currentCapacity) {
+        Bag bag = new Bag(bagIdentifier, MISCELLANEOUS, maxCapacity);
+        for (int i = 0; i < currentCapacity; i++) {
             bag.addItem(
                     new Item("Item name", CLOTHES)
             );
