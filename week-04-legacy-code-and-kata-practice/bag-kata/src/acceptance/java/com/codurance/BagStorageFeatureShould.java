@@ -20,7 +20,8 @@ public class BagStorageFeatureShould {
     private final BagRepository bagRepository = new InMemoryBagRepository();
     private final BagManager bagManager = new BagManager(bagRepository);
     private final BagSorter bagSorter = new BagSorter();
-    private final Adventurer adventurer = new Adventurer(bagRepository, bagManager, bagSorter);
+
+    private final Adventurer adventurer = new Adventurer(bagManager, bagSorter);
 
     @Test
     void sort_items_alphabetically_within_bags_to_appropriate_category() {
@@ -35,6 +36,7 @@ public class BagStorageFeatureShould {
     }
 
     private void setUpAdventurerWithInitialItems() {
+        adventurer.startAdventure();
         List<Item> initialItems = of(
                 new Item("Leather", CLOTHES),
                 new Item("Iron", METALS),
@@ -57,7 +59,7 @@ public class BagStorageFeatureShould {
     }
 
     private void giveAdventurerExtraMetalCategoryBag() {
-        bagRepository.addExtraBag(METALS);
+        bagRepository.addBag(METALS, 4);
     }
 
 }

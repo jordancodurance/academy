@@ -48,10 +48,6 @@ public class Bag {
         return items.size() < capacity;
     }
 
-    public void addItems(List<Item> newItems) {
-        items.addAll(newItems);
-    }
-
     public void addItem(Item item) {
         items.add(item);
     }

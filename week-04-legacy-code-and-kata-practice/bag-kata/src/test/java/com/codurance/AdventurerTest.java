@@ -1,9 +1,7 @@
 package com.codurance;
 
 import com.codurance.bag.Bag;
-import com.codurance.bag.BagIdentifier;
 import com.codurance.bag.BagManager;
-import com.codurance.bag.BagRepository;
 import com.codurance.bag.BagSorter;
 import com.codurance.item.Item;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,9 +23,6 @@ import static org.mockito.Mockito.verify;
 class AdventurerTest {
 
     @Mock
-    private BagRepository bagRepository;
-
-    @Mock
     private BagManager bagManager;
 
     @Mock
@@ -37,20 +32,25 @@ class AdventurerTest {
 
     @BeforeEach
     void setUp() {
-        target = new Adventurer(bagRepository, bagManager, bagSorter);
+        target = new Adventurer(bagManager, bagSorter);
+    }
+
+    @Test
+    void assemble_starting_bags_when_starting_an_adventure() {
+        target.startAdventure();
+
+        verify(bagManager).assembleStartingBags();
     }
 
     @Test
     void add_new_items_to_next_available_bag() {
-        List<Bag> persistedBags = new ArrayList<>();
-        BagIdentifier expectedBagIdentifier = new BagIdentifier(1001);
-        given(bagRepository.getBags()).willReturn(persistedBags);
-        given(bagManager.getNextAvailableBag(persistedBags)).willReturn(expectedBagIdentifier);
-        List<Item> newItems = of(new Item("Leather", CLOTHES));
+        List<Item> newItems = of(
+                new Item("Leather", CLOTHES)
+        );
 
         target.storeItems(newItems);
 
-        verify(bagRepository).addItems(expectedBagIdentifier, newItems);
+        verify(bagManager).addItemsToAvailableBag(newItems);
     }
 
     @Test
@@ -58,19 +58,19 @@ class AdventurerTest {
         List<Bag> persistedBags = new ArrayList<>();
         List<Bag> categoricallySortedBags = new ArrayList<>();
         List<Bag> alphabeticallySortedBags = new ArrayList<>();
-        given(bagRepository.getBags()).willReturn(persistedBags);
+        given(bagManager.getCurrentBags()).willReturn(persistedBags);
         given(bagSorter.reorganiseBagsByCategory(persistedBags)).willReturn(categoricallySortedBags);
         given(bagSorter.reorganiseBagsAlphabetically(categoricallySortedBags)).willReturn(alphabeticallySortedBags);
 
         target.castOrganise();
 
-        verify(bagRepository).replaceBags(alphabeticallySortedBags);
+        verify(bagManager).replaceCurrentBags(alphabeticallySortedBags);
     }
 
     @Test
     void retrieve_bags_persisted() {
         List<Bag> expectedBags = new ArrayList<>();
-        given(bagRepository.getBags()).willReturn(expectedBags);
+        given(bagManager.getCurrentBags()).willReturn(expectedBags);
 
         List<Bag> bags = target.getBags();
 

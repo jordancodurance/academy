@@ -1,9 +1,7 @@
 package com.codurance;
 
 import com.codurance.bag.Bag;
-import com.codurance.bag.BagIdentifier;
 import com.codurance.bag.BagManager;
-import com.codurance.bag.BagRepository;
 import com.codurance.bag.BagSorter;
 import com.codurance.item.Item;
 
@@ -11,33 +9,32 @@ import java.util.List;
 
 public class Adventurer {
 
-    private final BagRepository bagRepository;
     private final BagManager bagManager;
     private final BagSorter bagSorter;
 
-    public Adventurer(BagRepository bagRepository, BagManager bagManager, BagSorter bagSorter) {
-        this.bagRepository = bagRepository;
+    public Adventurer(BagManager bagManager, BagSorter bagSorter) {
         this.bagManager = bagManager;
         this.bagSorter = bagSorter;
     }
 
-    public void storeItems(List<Item> items) {
-        List<Bag> currentBags = bagRepository.getBags();
-        BagIdentifier nextAvailableBagIdentifier = bagManager.getNextAvailableBag(currentBags);
+    public void startAdventure() {
+        bagManager.assembleStartingBags();
+    }
 
-        bagRepository.addItems(nextAvailableBagIdentifier, items);
+    public void storeItems(List<Item> items) {
+        bagManager.addItemsToAvailableBag(items);
     }
 
     public void castOrganise() {
-        List<Bag> currentBags = bagRepository.getBags();
+        List<Bag> currentBags = getBags();
         currentBags = bagSorter.reorganiseBagsByCategory(currentBags);
         currentBags = bagSorter.reorganiseBagsAlphabetically(currentBags);
 
-        bagRepository.replaceBags(currentBags);
+        bagManager.replaceCurrentBags(currentBags);
     }
 
     public List<Bag> getBags() {
-        return bagRepository.getBags();
+        return bagManager.getCurrentBags();
     }
 
 }

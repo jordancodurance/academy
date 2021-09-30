@@ -14,6 +14,7 @@ import static com.codurance.item.ItemCategory.MISCELLANEOUS;
 import static java.util.List.of;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class BagManagerShould {
@@ -29,27 +30,39 @@ class BagManagerShould {
     }
 
     @Test
-    void return_current_bag_when_bag_under_capacity() {
-        BagIdentifier backpackIdentifier = new BagIdentifier(100);
-        Bag backpack = createBagWithCapacity(backpackIdentifier, 4, 3);
-        List<Bag> bags = of(backpack);
+    void create_backpack_for_starting_bags() {
+        target.assembleStartingBags();
 
-        BagIdentifier nextAvailableBagIdentifier = target.getNextAvailableBag(bags);
-
-        assertEquals(backpack.getIdentifier(), nextAvailableBagIdentifier);
+        verify(bagRepository).addBag(MISCELLANEOUS, 8);
     }
 
     @Test
-    void return_new_created_bag_when_current_bag_at_capacity() {
-        BagIdentifier nonBackpackIdentifier = new BagIdentifier(101);
-        Bag extraBag = createBagWithCapacity(nonBackpackIdentifier, 4, 4);
+    void add_item_to_current_bag_when_bag_under_capacity() {
+        BagIdentifier bagIdentifier = new BagIdentifier(100);
+        Bag bag = createBagWithCapacity(bagIdentifier, 4, 3);
+        List<Bag> bags = of(bag);
+        Item item = new Item("Leather", CLOTHES);
+        List<Item> newItems = of(item);
+        given(bagRepository.getBags()).willReturn(bags);
+
+        target.addItemsToAvailableBag(newItems);
+
+        verify(bagRepository).addItem(bagIdentifier, item);
+    }
+
+    @Test
+    void add_item_to_new_bag_when_current_bag_at_capacity() {
+        Bag extraBag = createBagWithCapacity(new BagIdentifier(101), 4, 4);
         List<Bag> bags = of(extraBag);
+        Item item = new Item("Leather", CLOTHES);
+        List<Item> newItems = of(item);
         BagIdentifier newBagIdentifier = new BagIdentifier(102);
-        given(bagRepository.addExtraBag(MISCELLANEOUS)).willReturn(newBagIdentifier);
+        given(bagRepository.getBags()).willReturn(bags);
+        given(bagRepository.addBag(MISCELLANEOUS, 4)).willReturn(newBagIdentifier);
 
-        BagIdentifier nextAvailableBagIdentifier = target.getNextAvailableBag(bags);
+        target.addItemsToAvailableBag(newItems);
 
-        assertEquals(newBagIdentifier, nextAvailableBagIdentifier);
+        verify(bagRepository).addItem(newBagIdentifier, item);
     }
 
     private Bag createBagWithCapacity(BagIdentifier bagIdentifier, int maxCapacity, int currentCapacity) {
@@ -60,6 +73,29 @@ class BagManagerShould {
             );
         }
         return bag;
+    }
+
+    @Test
+    void retrieve_current_bags_persisted() {
+        List<Bag> expectedBags = of(
+                createBagWithCapacity(new BagIdentifier(100), 8, 3)
+        );
+        given(bagRepository.getBags()).willReturn(expectedBags);
+
+        List<Bag> bags = target.getCurrentBags();
+
+        assertEquals(expectedBags, bags);
+    }
+
+    @Test
+    void replace_current_persisted_bags() {
+        List<Bag> newBags = of(
+                createBagWithCapacity(new BagIdentifier(100), 8, 7)
+        );
+
+        target.replaceCurrentBags(newBags);
+
+        verify(bagRepository).replaceBags(newBags);
     }
 
 }

@@ -49,7 +49,9 @@ public class BagSorterShould {
                 new Item("Iron", METALS),
                 new Item("Copper", METALS)
         );
-        bag.addItems(items);
+
+        for (Item item : items)
+            bag.addItem(item);
 
         return bag;
     }
@@ -61,7 +63,9 @@ public class BagSorterShould {
                 new Item("Copper", METALS),
                 new Item("Copper", METALS)
         );
-        bag.addItems(items);
+
+        for (Item item : items)
+            bag.addItem(item);
 
         return bag;
     }

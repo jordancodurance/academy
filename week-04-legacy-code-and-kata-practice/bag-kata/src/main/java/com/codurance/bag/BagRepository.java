@@ -7,12 +7,12 @@ import java.util.List;
 
 public interface BagRepository {
 
+    BagIdentifier addBag(ItemCategory itemCategory, int capacity);
+
     List<Bag> getBags();
 
-    void addItems(BagIdentifier identifier, List<Item> items);
+    void addItem(BagIdentifier identifier, Item item);
 
     void replaceBags(List<Bag> bags);
-
-    BagIdentifier addExtraBag(ItemCategory itemCategory);
 
 }
