@@ -6,17 +6,24 @@ import com.codurance.item.ItemCategory;
 import java.util.List;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
+import static java.lang.String.format;
 import static java.util.Collections.reverse;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 
 public class BagSorter {
 
+    private final BagSearcher bagSearcher;
+
+    public BagSorter(BagSearcher bagSearcher) {
+        this.bagSearcher = bagSearcher;
+    }
+
     public List<Bag> reorganiseBagsByCategory(List<Bag> bags) {
         List<Bag> sortedBags = getEmptyCategorisedBags(bags);
         List<Item> items = getChronologicalOrderedItems(bags);
         for (Item item : items) {
-            Bag bag = findAppropriateBagToPlace(sortedBags, item);
+            Bag bag = getBagForItemReassignment(sortedBags, item);
             bag.addItem(item);
         }
 
@@ -36,14 +43,12 @@ public class BagSorter {
         return items;
     }
 
-    private Bag findAppropriateBagToPlace(List<Bag> bags, Item item) {
+    private Bag getBagForItemReassignment(List<Bag> sortedBags, Item item) {
         ItemCategory category = item.getCategory();
 
-        return bags
-                .stream()
-                .filter(bag -> bag.getItemCategory() == category && bag.hasCapacity())
-                .findFirst()
-                .orElse(bags.get(0));
+        return bagSearcher
+                .findAvailableBagForItemReassignment(sortedBags, category)
+                .orElseThrow(() -> new UnableToSortItemException(format("Unable to sort item %s due to insufficient storage", item.getName())));
     }
 
     public List<Bag> reorganiseBagsAlphabetically(List<Bag> bags) {

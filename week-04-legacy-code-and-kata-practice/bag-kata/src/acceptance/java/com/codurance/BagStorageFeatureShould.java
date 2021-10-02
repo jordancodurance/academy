@@ -2,6 +2,7 @@ package com.codurance;
 
 import com.codurance.bag.BagManager;
 import com.codurance.bag.BagRepository;
+import com.codurance.bag.BagSearcher;
 import com.codurance.bag.BagSorter;
 import com.codurance.bag.InMemoryBagRepository;
 import com.codurance.item.Item;
@@ -19,7 +20,8 @@ public class BagStorageFeatureShould {
 
     private final BagRepository bagRepository = new InMemoryBagRepository();
     private final BagManager bagManager = new BagManager(bagRepository);
-    private final BagSorter bagSorter = new BagSorter();
+    private final BagSearcher bagSearcher = new BagSearcher();
+    private final BagSorter bagSorter = new BagSorter(bagSearcher);
 
     private final Adventurer adventurer = new Adventurer(bagManager, bagSorter);
 
