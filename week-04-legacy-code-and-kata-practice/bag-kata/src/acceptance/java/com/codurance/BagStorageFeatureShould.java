@@ -27,7 +27,6 @@ public class BagStorageFeatureShould {
     void sort_items_alphabetically_within_bags_to_appropriate_category() {
         setUpAdventurerWithInitialItems();
         giveAdventurerTwoNewItems();
-        giveAdventurerExtraMetalCategoryBag();
 
         adventurer.castOrganise();
 
@@ -56,10 +55,6 @@ public class BagStorageFeatureShould {
                 new Item("Cherry Blossom", HERBS)
         );
         adventurer.storeItems(newItems);
-    }
-
-    private void giveAdventurerExtraMetalCategoryBag() {
-        bagRepository.addBag(METALS, 4);
     }
 
 }

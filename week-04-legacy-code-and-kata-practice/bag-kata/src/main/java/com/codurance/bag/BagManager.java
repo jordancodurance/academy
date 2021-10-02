@@ -4,7 +4,9 @@ import com.codurance.item.Item;
 
 import java.util.List;
 
+import static com.codurance.item.ItemCategory.METALS;
 import static com.codurance.item.ItemCategory.MISCELLANEOUS;
+import static com.codurance.item.ItemCategory.WEAPONS;
 
 public class BagManager {
 
@@ -19,6 +21,10 @@ public class BagManager {
 
     public void assembleStartingBags() {
         bagRepository.addBag(MISCELLANEOUS, BACKPACK_CAPACITY);
+        bagRepository.addBag(METALS, EXTRA_BAG_CAPACITY);
+        bagRepository.addBag(MISCELLANEOUS, EXTRA_BAG_CAPACITY);
+        bagRepository.addBag(WEAPONS, EXTRA_BAG_CAPACITY);
+        bagRepository.addBag(MISCELLANEOUS, EXTRA_BAG_CAPACITY);
     }
 
     public void addItemsToAvailableBag(List<Item> items) {
@@ -31,13 +37,12 @@ public class BagManager {
     }
 
     private BagIdentifier getNextAvailableBag(List<Bag> bags) {
-        int bagCount = bags.size();
-        Bag currentBag = bags.get(bagCount - 1);
-        BagIdentifier currentBagIdentifier = currentBag.getIdentifier();
-
-        if (currentBag.hasCapacity()) return currentBagIdentifier;
-
-        return bagRepository.addBag(MISCELLANEOUS, EXTRA_BAG_CAPACITY);
+        return bags
+                .stream()
+                .filter(Bag::hasCapacity)
+                .findFirst()
+                .map(Bag::getIdentifier)
+                .orElseThrow(InventoryFullException::new);
     }
 
     public List<Bag> getCurrentBags() {

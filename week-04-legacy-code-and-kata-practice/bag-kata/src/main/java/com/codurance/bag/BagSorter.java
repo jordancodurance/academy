@@ -3,11 +3,8 @@ package com.codurance.bag;
 import com.codurance.item.Item;
 import com.codurance.item.ItemCategory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import static com.codurance.item.ItemCategory.MISCELLANEOUS;
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 import static java.util.Collections.reverse;
 import static java.util.Comparator.comparing;
@@ -16,35 +13,37 @@ import static java.util.stream.Collectors.toList;
 public class BagSorter {
 
     public List<Bag> reorganiseBagsByCategory(List<Bag> bags) {
-        HashMap<ItemCategory, Bag> sortedBags = createSortedBags(bags);
+        List<Bag> sortedBags = getEmptyCategorisedBags(bags);
+        List<Item> items = getChronologicalOrderedItems(bags);
+        for (Item item : items) {
+            Bag bag = findAppropriateBagToPlace(sortedBags, item);
+            bag.addItem(item);
+        }
+
+        return sortedBags;
+    }
+
+    private List<Bag> getEmptyCategorisedBags(List<Bag> bags) {
+        return bags
+                .stream()
+                .map(bag -> new Bag(bag.getIdentifier(), bag.getItemCategory(), bag.getCapacity()))
+                .collect(toList());
+    }
+
+    private List<Item> getChronologicalOrderedItems(List<Bag> bags) {
         List<Item> items = bags.stream().flatMap(bag -> bag.getItems().stream()).collect(toList());
         reverse(items);
-
-        for (Item item : items) {
-            Bag sortedBag = findAppropriateBagToPlace(sortedBags, item);
-            sortedBag.addItem(item);
-        }
-
-        return new ArrayList<>(sortedBags.values());
+        return items;
     }
 
-    private Bag findAppropriateBagToPlace(HashMap<ItemCategory, Bag> sortedBags, Item item) {
+    private Bag findAppropriateBagToPlace(List<Bag> bags, Item item) {
         ItemCategory category = item.getCategory();
-        Bag bag = sortedBags.get(category);
-        if (sortedBags.containsKey(category) && bag.hasCapacity()) return bag;
 
-        return sortedBags.get(MISCELLANEOUS);
-    }
-
-    private HashMap<ItemCategory, Bag> createSortedBags(List<Bag> bags) {
-        HashMap<ItemCategory, Bag> sortedBag = new HashMap<>();
-        for (Bag bag : bags) {
-            ItemCategory category = bag.getItemCategory();
-            Bag copiedBag = new Bag(bag.getIdentifier(), category, bag.getCapacity());
-            sortedBag.put(category, copiedBag);
-        }
-
-        return sortedBag;
+        return bags
+                .stream()
+                .filter(bag -> bag.getItemCategory() == category && bag.hasCapacity())
+                .findFirst()
+                .orElse(bags.get(0));
     }
 
     public List<Bag> reorganiseBagsAlphabetically(List<Bag> bags) {

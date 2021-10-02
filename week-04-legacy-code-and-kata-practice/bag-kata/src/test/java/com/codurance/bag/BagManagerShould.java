@@ -4,16 +4,21 @@ import com.codurance.item.Item;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
 import static com.codurance.item.ItemCategory.CLOTHES;
+import static com.codurance.item.ItemCategory.METALS;
 import static com.codurance.item.ItemCategory.MISCELLANEOUS;
+import static com.codurance.item.ItemCategory.WEAPONS;
 import static java.util.List.of;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,10 +35,15 @@ class BagManagerShould {
     }
 
     @Test
-    void create_backpack_for_starting_bags() {
+    void assemble_starting_bags() {
         target.assembleStartingBags();
 
-        verify(bagRepository).addBag(MISCELLANEOUS, 8);
+        InOrder inOrder = inOrder(bagRepository);
+        inOrder.verify(bagRepository).addBag(MISCELLANEOUS, 8);
+        inOrder.verify(bagRepository).addBag(METALS, 4);
+        inOrder.verify(bagRepository).addBag(MISCELLANEOUS, 4);
+        inOrder.verify(bagRepository).addBag(WEAPONS, 4);
+        inOrder.verify(bagRepository).addBag(MISCELLANEOUS, 4);
     }
 
     @Test
@@ -51,28 +61,29 @@ class BagManagerShould {
     }
 
     @Test
-    void add_item_to_new_bag_when_current_bag_at_capacity() {
-        Bag extraBag = createBagWithCapacity(new BagIdentifier(101), 4, 4);
-        List<Bag> bags = of(extraBag);
+    void add_item_to_next_bag_when_current_bag_at_capacity() {
+        Bag firstBag = createBagWithCapacity(new BagIdentifier(101), 1, 1);
+        BagIdentifier secondBagIdentifier = new BagIdentifier(102);
+        Bag secondBag = createBagWithCapacity(secondBagIdentifier, 1, 0);
+        List<Bag> bags = of(firstBag, secondBag);
         Item item = new Item("Leather", CLOTHES);
         List<Item> newItems = of(item);
-        BagIdentifier newBagIdentifier = new BagIdentifier(102);
         given(bagRepository.getBags()).willReturn(bags);
-        given(bagRepository.addBag(MISCELLANEOUS, 4)).willReturn(newBagIdentifier);
 
         target.addItemsToAvailableBag(newItems);
 
-        verify(bagRepository).addItem(newBagIdentifier, item);
+        verify(bagRepository).addItem(secondBagIdentifier, item);
     }
 
-    private Bag createBagWithCapacity(BagIdentifier bagIdentifier, int maxCapacity, int currentCapacity) {
-        Bag bag = new Bag(bagIdentifier, MISCELLANEOUS, maxCapacity);
-        for (int i = 0; i < currentCapacity; i++) {
-            bag.addItem(
-                    new Item("Item name", CLOTHES)
-            );
-        }
-        return bag;
+    @Test
+    void block_storing_an_item_when_all_bags_are_full() {
+        Bag firstBag = createBagWithCapacity(new BagIdentifier(101), 1, 1);
+        Bag secondBag = createBagWithCapacity(new BagIdentifier(102), 1, 1);
+        List<Bag> bags = of(firstBag, secondBag);
+        List<Item> newItems = of(new Item("Leather", CLOTHES));
+        given(bagRepository.getBags()).willReturn(bags);
+
+        assertThrows(InventoryFullException.class, () -> target.addItemsToAvailableBag(newItems));
     }
 
     @Test
@@ -96,6 +107,16 @@ class BagManagerShould {
         target.replaceCurrentBags(newBags);
 
         verify(bagRepository).replaceBags(newBags);
+    }
+
+    private Bag createBagWithCapacity(BagIdentifier bagIdentifier, int maxCapacity, int currentCapacity) {
+        Bag bag = new Bag(bagIdentifier, MISCELLANEOUS, maxCapacity);
+        for (int i = 0; i < currentCapacity; i++) {
+            bag.addItem(
+                    new Item("Item name", CLOTHES)
+            );
+        }
+        return bag;
     }
 
 }
