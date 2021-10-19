@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import axios from 'axios';
-import { Input, Fieldset, Label, LabelText } from 'govuk-react';
-import { Page, Footer } from 'govuk-react';
+import {Button, Fieldset, Footer, Input, Label, LabelText, Page} from 'govuk-react';
 
 function FathersDetails() {
     const [firstName, setFirstName] = useState("");
@@ -13,7 +12,7 @@ function FathersDetails() {
             const res = await axios.get(`http://localhost:3004/father`);
 
             if (res) {
-                const { firstName, lastName, age } = res.data;
+                const {firstName, lastName, age} = res.data;
 
                 setFirstName(firstName);
                 setLastName(lastName);
@@ -37,43 +36,45 @@ function FathersDetails() {
             <Page>
                 <div className="wrapper">
                     <h2>Your Fathers Details</h2>
-                        <form onSubmit={onSubmit}>
-                            <Fieldset>
-                                <Fieldset.Legend>Please enter his details</Fieldset.Legend>
-                                <div className="form-group">
-                                    <Label>
-                                        <LabelText>
-                                            First Name
-                                        </LabelText>
-                                        <Input name={"firstName"} defaultValue={firstName} onChange={e => setFirstName(e.target.value)} />
-                                    </Label>
-                                </div>
-                                <div className="form-group">
-                                    <Label>
-                                        <LabelText>
-                                            Last Name
-                                        </LabelText>
-                                        <Input name={"lastName"} defaultValue={lastName} onChange={e => setLastName(e.target.value)} />
-                                    </Label>
-                                </div>
-                                <div className="form-group">
-                                    <Label>
-                                        <LabelText>
-                                            Age
-                                        </LabelText>
-                                        <Input name={"age"} defaultValue={age} onChange={e => setAge(e.target.value)} />
-                                    </Label>
-                                </div>
-                                <div className="form-group">
-                                    <Input data-testid="submit-button" type="submit" />
-                                </div>
-                            </Fieldset>
-                        </form>
+                    <form onSubmit={onSubmit}>
+                        <Fieldset>
+                            <Fieldset.Legend>Please enter his details</Fieldset.Legend>
+                            <div className="form-group">
+                                <Label>
+                                    <LabelText>
+                                        First Name
+                                    </LabelText>
+                                    <Input name={"firstName"} defaultValue={firstName}
+                                           onChange={e => setFirstName(e.target.value)}/>
+                                </Label>
+                            </div>
+                            <div className="form-group">
+                                <Label>
+                                    <LabelText>
+                                        Last Name
+                                    </LabelText>
+                                    <Input name={"lastName"} defaultValue={lastName}
+                                           onChange={e => setLastName(e.target.value)}/>
+                                </Label>
+                            </div>
+                            <div className="form-group">
+                                <Label>
+                                    <LabelText>
+                                        Age
+                                    </LabelText>
+                                    <Input name={"age"} defaultValue={age} onChange={e => setAge(e.target.value)}/>
+                                </Label>
+                            </div>
+                            <div className="form-group">
+                                <Button data-testid="submit-button" type="submit">Submit</Button>
+                            </div>
+                        </Fieldset>
+                    </form>
                 </div>
             </Page>
-            <Footer />
+            <Footer/>
         </>
     )
 }
 
-export { FathersDetails }
+export {FathersDetails}

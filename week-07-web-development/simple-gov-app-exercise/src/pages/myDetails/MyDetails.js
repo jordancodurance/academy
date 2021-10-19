@@ -66,7 +66,7 @@ function MyDetails() {
                                 </Label>
                             </div>
                             <div className="form-group">
-                                <button data-testid="submit-button" type="submit">Submit</button>
+                                <Button data-testid="submit-button" type="submit">Submit</Button>
                             </div>
                         </Fieldset>
                     </form>
