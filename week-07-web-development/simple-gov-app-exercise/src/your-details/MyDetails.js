@@ -39,32 +39,13 @@ function MyDetails() {
                     <form onSubmit={onSubmit}>
                         <Fieldset>
                             <Fieldset.Legend>Please enter your details</Fieldset.Legend>
-                            <div className="form-group">
-                                <Label>
-                                    <LabelText>
-                                        First Name
-                                    </LabelText>
-                                    <Input name={"firstName"} defaultValue={firstName}
-                                           onChange={e => setFirstName(e.target.value)}/>
-                                </Label>
-                            </div>
-                            <div className="form-group">
-                                <Label>
-                                    <LabelText>
-                                        Last Name
-                                    </LabelText>
-                                    <Input name={"lastName"} defaultValue={lastName}
-                                           onChange={e => setLastName(e.target.value)}/>
-                                </Label>
-                            </div>
-                            <div className="form-group">
-                                <Label>
-                                    <LabelText>
-                                        Age
-                                    </LabelText>
-                                    <Input name={"age"} defaultValue={age} onChange={e => setAge(e.target.value)}/>
-                                </Label>
-                            </div>
+
+                            <FormField label="First Name" name="firstName" value={firstName}
+                                       valueSetter={setFirstName}/>
+
+                            <FormField label="Last Name" name="lastName" value={lastName} valueSetter={setLastName}/>
+
+                            <FormField label="Age" name="age" value={age} valueSetter={setAge}/>
                             <div className="form-group">
                                 <Button data-testid="submit-button" type="submit">Submit</Button>
                             </div>
@@ -75,6 +56,21 @@ function MyDetails() {
             <Footer/>
         </>
     )
+}
+
+function FormField(props) {
+    const {label, name, value, valueSetter} = props;
+
+    return (
+        <div className="form-group">
+            <Label>
+                <LabelText>
+                    {label}
+                </LabelText>
+                <Input name={name} defaultValue={value} onChange={e => valueSetter(e.target.value)}/>
+            </Label>
+        </div>
+    );
 }
 
 export {MyDetails}
