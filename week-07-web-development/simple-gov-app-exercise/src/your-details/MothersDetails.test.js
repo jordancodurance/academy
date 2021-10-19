@@ -68,3 +68,18 @@ describe('on mothers details render', () => {
         userEvent.type(input, value);
     }
 });
+
+/*
+
+- your-details
+     - FatherDetails.js (/your-details/father)
+     - MotherDetails.js (/your-details/mother)
+     - YourDetails.js (/your-details)
+     - YourDetailsRoutes.js
+     - shared
+       - PersonForm.js
+       - NameInput.js
+- homepage
+
+
+ */
