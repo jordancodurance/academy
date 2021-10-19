@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
-import { Input, Fieldset, Label, LabelText } from 'govuk-react';
+import {Input, Fieldset, Label, LabelText, Button} from 'govuk-react';
 import { Page, Footer } from 'govuk-react';
 
 function MothersDetails() {
@@ -63,7 +63,7 @@ function MothersDetails() {
                                         <LabelText>
                                             Maiden Name
                                         </LabelText>
-                                        <Input name={"lastName"} defaultValue={maidenName} onChange={e => setMaidenName(e.target.value)} />
+                                        <Input name={"maidenName"} defaultValue={maidenName} onChange={e => setMaidenName(e.target.value)} />
                                     </Label>
                                 </div>
                                 <div className="form-group">
@@ -75,7 +75,7 @@ function MothersDetails() {
                                     </Label>
                                 </div>
                                 <div className="form-group">
-                                    <Input data-testid="submit-button" type="submit" />
+                                    <Button data-testid="submit-button" type="submit">Submit</Button>
                                 </div>
                             </Fieldset>
                         </form>
