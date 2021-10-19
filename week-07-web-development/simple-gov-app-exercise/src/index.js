@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Homepage } from './pages/homepage/Homepage';
+import { Homepage } from './homepage/Homepage';
 import { MyDetailsRoutes } from './your-details/MyDetailsRoutes';
 import './index.css'
 import {
