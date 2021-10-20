@@ -1,10 +1,21 @@
 import React, {useEffect, useState} from "react";
 import {Button, Fieldset} from "govuk-react";
-import * as PropTypes from "prop-types";
 
 function SubmittableForm(props) {
-    const {onSubmit, heading, initialState, children} = props;
-    const [fields, setFields] = useState(initialState);
+    const {onSubmit, heading, loadInitialState, children} = props;
+    const [fields, setFields] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+          setInitialFields();
+    }, []);
+
+    const setInitialFields = () => {
+        loadInitialState().then((response) => {
+            setFields(response);
+            setIsLoading(false);
+        });
+    };
 
     const onFormSubmit = event => {
         event.preventDefault();
@@ -12,14 +23,17 @@ function SubmittableForm(props) {
         onSubmit(fields);
     }
 
-    function updateForm(event) {
+    const updateForm = event => {
         const {name, value} = event.target;
         setFields({
             ...fields,
             [name]: value
         });
-    }
+    };
 
+    if (isLoading) {
+        return <div>Loading...</div>
+    }
 
     return (
         <form onSubmit={onFormSubmit}>
@@ -28,6 +42,7 @@ function SubmittableForm(props) {
 
                 {
                     children({
+                        fields,
                         handleFormUpdated: updateForm
                     })
                 }
