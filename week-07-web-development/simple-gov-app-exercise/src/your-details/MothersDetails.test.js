@@ -11,10 +11,10 @@ describe('on mothers details render', () => {
         it('should not pre-fill the form', async () => {
             await render(<MothersDetails/>)
 
-            expectInputToHaveValue('First Name', '');
-            expectInputToHaveValue('Last Name', '');
-            expectInputToHaveValue('Maiden Name', '');
-            expectInputToHaveValue('Age', '');
+            await expectInputToHaveValue('First Name', '');
+            await expectInputToHaveValue('Last Name', '');
+            await expectInputToHaveValue('Maiden Name', '');
+            await expectInputToHaveValue('Age', '');
         });
     });
 
@@ -31,20 +31,20 @@ describe('on mothers details render', () => {
 
             await render(<MothersDetails/>);
 
-            expectInputToHaveValue('First Name', 'Jane');
-            expectInputToHaveValue('Last Name', 'Joe');
-            expectInputToHaveValue('Maiden Name', 'James');
-            expectInputToHaveValue('Age', '30');
+            await expectInputToHaveValue('First Name', 'Jane');
+            await expectInputToHaveValue('Last Name', 'Joe');
+            await expectInputToHaveValue('Maiden Name', 'James');
+            await expectInputToHaveValue('Age', '30');
         });
     });
 
     describe('submit button pressed', () => {
         it('should persist the details', async () => {
             await render(<MothersDetails/>);
-            inputText('First Name', 'John');
-            inputText('Last Name', 'Joe');
-            inputText('Maiden Name', 'James');
-            inputText('Age', '20');
+            await inputText('First Name', 'John');
+            await inputText('Last Name', 'Joe');
+            await inputText('Maiden Name', 'James');
+            await inputText('Age', '20');
 
             screen.getByText('Submit', {selector: 'button'}).click();
 
@@ -57,29 +57,15 @@ describe('on mothers details render', () => {
         });
     });
 
-    const expectInputToHaveValue = (labelText, value) => {
-        expect(findInput(labelText)).toHaveValue(value);
+    const expectInputToHaveValue = async (labelText, value) => {
+        const input = await findInput(labelText);
+        expect(input).toHaveValue(value);
     };
 
-    const findInput = labelText => screen.getByLabelText(labelText);
+    const findInput = async labelText => screen.findByLabelText(labelText);
 
-    const inputText = (labelText, value) => {
-        const input = findInput(labelText);
+    const inputText = async (labelText, value) => {
+        const input = await findInput(labelText);
         userEvent.type(input, value);
     }
 });
-
-/*
-
-- your-details
-     - FatherDetails.js (/your-details/father)
-     - MotherDetails.js (/your-details/mother)
-     - YourDetails.js (/your-details)
-     - YourDetailsRoutes.js
-     - shared
-       - PersonForm.js
-       - NameInput.js
-- homepage
-
-
- */
