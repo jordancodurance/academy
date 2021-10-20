@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import axios from 'axios';
-import {Input, Fieldset, Label, LabelText, Button} from 'govuk-react';
-import { Page, Footer } from 'govuk-react';
+import {Button, Fieldset, Input, Label, LabelText} from 'govuk-react';
+import {BrandedPage} from "../shared/BrandedPage";
 
 function MothersDetails() {
     const [firstName, setFirstName] = useState("");
@@ -14,7 +14,7 @@ function MothersDetails() {
             const res = await axios.get(`http://localhost:3004/mother`);
 
             if (res) {
-                const { firstName, lastName, age, maidenName } = res.data;
+                const {firstName, lastName, age, maidenName} = res.data;
 
                 setFirstName(firstName);
                 setLastName(lastName);
@@ -35,55 +35,53 @@ function MothersDetails() {
     }
 
     return (
-        <>
-            <Page>
-                <div className="wrapper">
-                    <h2>Your Mothers Details</h2>
-                        <form onSubmit={onSubmit}>
-                            <Fieldset>
-                                <Fieldset.Legend>Please enter her details</Fieldset.Legend>
-                                <div className="form-group">
-                                    <Label>
-                                        <LabelText>
-                                            First Name
-                                        </LabelText>
-                                        <Input name={"firstName"} defaultValue={firstName} onChange={e => setFirstName(e.target.value)} />
-                                    </Label>
-                                </div>
-                                <div className="form-group">
-                                    <Label>
-                                        <LabelText>
-                                            Last Name
-                                        </LabelText>
-                                        <Input name={"lastName"} defaultValue={lastName} onChange={e => setLastName(e.target.value)} />
-                                    </Label>
-                                </div>
-                                <div className="form-group">
-                                    <Label>
-                                        <LabelText>
-                                            Maiden Name
-                                        </LabelText>
-                                        <Input name={"maidenName"} defaultValue={maidenName} onChange={e => setMaidenName(e.target.value)} />
-                                    </Label>
-                                </div>
-                                <div className="form-group">
-                                    <Label>
-                                        <LabelText>
-                                            Age
-                                        </LabelText>
-                                        <Input name={"age"} defaultValue={age} onChange={e => setAge(e.target.value)} />
-                                    </Label>
-                                </div>
-                                <div className="form-group">
-                                    <Button data-testid="submit-button" type="submit">Submit</Button>
-                                </div>
-                            </Fieldset>
-                        </form>
-                </div>
-            </Page>
-            <Footer />
-        </>
-    )
+        <BrandedPage>
+            <h2>Your Mothers Details</h2>
+            <form onSubmit={onSubmit}>
+                <Fieldset>
+                    <Fieldset.Legend>Please enter her details</Fieldset.Legend>
+                    <div className="form-group">
+                        <Label>
+                            <LabelText>
+                                First Name
+                            </LabelText>
+                            <Input name={"firstName"} defaultValue={firstName}
+                                   onChange={e => setFirstName(e.target.value)}/>
+                        </Label>
+                    </div>
+                    <div className="form-group">
+                        <Label>
+                            <LabelText>
+                                Last Name
+                            </LabelText>
+                            <Input name={"lastName"} defaultValue={lastName}
+                                   onChange={e => setLastName(e.target.value)}/>
+                        </Label>
+                    </div>
+                    <div className="form-group">
+                        <Label>
+                            <LabelText>
+                                Maiden Name
+                            </LabelText>
+                            <Input name={"maidenName"} defaultValue={maidenName}
+                                   onChange={e => setMaidenName(e.target.value)}/>
+                        </Label>
+                    </div>
+                    <div className="form-group">
+                        <Label>
+                            <LabelText>
+                                Age
+                            </LabelText>
+                            <Input name={"age"} defaultValue={age} onChange={e => setAge(e.target.value)}/>
+                        </Label>
+                    </div>
+                    <div className="form-group">
+                        <Button data-testid="submit-button" type="submit">Submit</Button>
+                    </div>
+                </Fieldset>
+            </form>
+        </BrandedPage>
+    );
 }
 
-export { MothersDetails }
+export {MothersDetails}
