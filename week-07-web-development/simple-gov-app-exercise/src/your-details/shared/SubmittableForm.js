@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Button, Fieldset} from "govuk-react";
 
 function SubmittableForm(props) {
-    const {onSubmit, heading, loadInitialState, children} = props;
+    const {onSubmit, loadInitialState, children} = props;
     const [fields, setFields] = useState({});
     const [isLoading, setIsLoading] = useState(true);
 
@@ -38,8 +38,6 @@ function SubmittableForm(props) {
     return (
         <form onSubmit={onFormSubmit}>
             <Fieldset>
-                <Fieldset.Legend>{heading}</Fieldset.Legend>
-
                 {
                     children({
                         fields,

@@ -23,9 +23,11 @@ function MyDetails() {
                 <div className="wrapper">
                     <h2>Your Details</h2>
 
-                    <SubmittableForm heading="Please enter your details" loadInitialState={getInitialDetails} onSubmit={updateYourDetails}>
+                    <SubmittableForm loadInitialState={getInitialDetails} onSubmit={updateYourDetails}>
                         {({fields, handleFormUpdated}) => (
                             <>
+                                <Fieldset.Legend>Please enter your details</Fieldset.Legend>
+
                                 <FormField label="First Name" name="firstName" value={fields.firstName} valueSetter={handleFormUpdated} />
 
                                 <FormField label="Last Name" name="lastName" value={fields.lastName} valueSetter={handleFormUpdated} />
