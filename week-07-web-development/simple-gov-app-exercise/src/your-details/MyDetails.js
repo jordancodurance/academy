@@ -5,30 +5,26 @@ import {FormField} from "./shared/FormField";
 import {SubmittableForm} from "./shared/SubmittableForm";
 
 function MyDetails() {
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [age, setAge] = useState("");
+    const [details, setDetails] = useState({
+        firstName: "",
+        lastName: "",
+        age: ""
+    })
 
     useEffect(() => {
         const getMyDetails = async () => {
             const res = await axios.get(`http://localhost:3004/subject`);
 
             if (res) {
-                const {firstName, lastName, age} = res.data;
-
-                setFirstName(firstName);
-                setLastName(lastName);
-                setAge(age);
+                setDetails(res.data);
             }
         }
 
         getMyDetails();
     }, []);
 
-    const updateYourDetails = () => {
-        axios.post('http://localhost:3004/subject', {
-            firstName, lastName, age
-        });
+    const updateYourDetails = (fields) => {
+        axios.post('http://localhost:3004/subject', fields);
     }
 
     return (
@@ -37,12 +33,16 @@ function MyDetails() {
                 <div className="wrapper">
                     <h2>Your Details</h2>
 
-                    <SubmittableForm heading="Please enter your details" onSubmit={updateYourDetails}>
-                        <FormField label="First Name" name="firstName" value={firstName} valueSetter={setFirstName}/>
+                    <SubmittableForm heading="Please enter your details" initialState={details} onSubmit={updateYourDetails}>
+                        {({handleFormUpdated}) => (
+                            <>
+                                <FormField label="First Name" name="firstName" value={details.firstName} valueSetter={handleFormUpdated} />
 
-                        <FormField label="Last Name" name="lastName" value={lastName} valueSetter={setLastName}/>
+                                <FormField label="Last Name" name="lastName" value={details.lastName} valueSetter={handleFormUpdated} />
 
-                        <FormField label="Age" name="age" value={age} valueSetter={setAge}/>
+                                <FormField label="Age" name="age" value={details.age} valueSetter={handleFormUpdated} />
+                            </>
+                        )}
                     </SubmittableForm>
                 </div>
             </Page>

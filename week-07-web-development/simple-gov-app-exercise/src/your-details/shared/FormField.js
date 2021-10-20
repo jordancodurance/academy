@@ -10,7 +10,7 @@ function FormField(props) {
                 <LabelText>
                     {label}
                 </LabelText>
-                <Input name={name} defaultValue={value} onChange={e => valueSetter(e.target.value)}/>
+                <Input name={name} defaultValue={value} onChange={valueSetter}/>
             </Label>
         </div>
     );
