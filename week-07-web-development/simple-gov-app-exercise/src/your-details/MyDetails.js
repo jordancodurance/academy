@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import axios from 'axios';
-import {Button, Fieldset, Footer, Input, Label, LabelText, Page} from 'govuk-react';
+import {Button, Fieldset, Footer, Page} from 'govuk-react';
+import {FormField} from "./shared/FormField";
 
 function MyDetails() {
     const [firstName, setFirstName] = useState("");
@@ -40,6 +41,7 @@ function MyDetails() {
                         <Fieldset>
                             <Fieldset.Legend>Please enter your details</Fieldset.Legend>
 
+
                             <FormField label="First Name" name="firstName" value={firstName}
                                        valueSetter={setFirstName}/>
 
@@ -56,21 +58,6 @@ function MyDetails() {
             <Footer/>
         </>
     )
-}
-
-function FormField(props) {
-    const {label, name, value, valueSetter} = props;
-
-    return (
-        <div className="form-group">
-            <Label>
-                <LabelText>
-                    {label}
-                </LabelText>
-                <Input name={name} defaultValue={value} onChange={e => valueSetter(e.target.value)}/>
-            </Label>
-        </div>
-    );
 }
 
 export {MyDetails}
