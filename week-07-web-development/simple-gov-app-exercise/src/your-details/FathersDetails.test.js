@@ -11,9 +11,9 @@ describe('on fathers details render', () => {
         it('should not pre-fill the form', async () => {
             await render(<FathersDetails/>)
 
-            expectInputToHaveValue('First Name', '');
-            expectInputToHaveValue('Last Name', '');
-            expectInputToHaveValue('Age', '');
+            await expectInputToHaveValue('First Name', '');
+            await expectInputToHaveValue('Last Name', '');
+            await expectInputToHaveValue('Age', '');
         });
     });
 
@@ -29,18 +29,18 @@ describe('on fathers details render', () => {
 
             await render(<FathersDetails/>);
 
-            expectInputToHaveValue('First Name', 'John');
-            expectInputToHaveValue('Last Name', 'Joe');
-            expectInputToHaveValue('Age', '20');
+            await expectInputToHaveValue('First Name', 'John');
+            await expectInputToHaveValue('Last Name', 'Joe');
+            await expectInputToHaveValue('Age', '20');
         });
     });
 
     describe('submit button pressed', () => {
         it('should persist the details', async () => {
             await render(<FathersDetails/>);
-            inputText('First Name', 'John');
-            inputText('Last Name', 'Joe');
-            inputText('Age', '20');
+            await inputText('First Name', 'John');
+            await inputText('Last Name', 'Joe');
+            await inputText('Age', '20');
 
             screen.getByText('Submit', {selector: 'button'}).click();
 
@@ -52,14 +52,15 @@ describe('on fathers details render', () => {
         });
     });
 
-    const expectInputToHaveValue = (labelText, value) => {
-        expect(findInput(labelText)).toHaveValue(value);
+    const expectInputToHaveValue = async (labelText, value) => {
+        const input = await findInput(labelText);
+        expect(input).toHaveValue(value);
     };
 
-    const findInput = labelText => screen.getByLabelText(labelText);
+    const findInput = async labelText => screen.findByLabelText(labelText);
 
-    const inputText = (labelText, value) => {
-        const input = findInput(labelText);
+    const inputText = async (labelText, value) => {
+        const input = await findInput(labelText);
         userEvent.type(input, value);
     }
 });

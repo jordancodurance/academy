@@ -1,74 +1,42 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import axios from 'axios';
-import {Button, Fieldset, Input, Label, LabelText} from 'govuk-react';
+import {Fieldset} from 'govuk-react';
 import {BrandedPage} from "../shared/BrandedPage";
+import {SubmittableForm} from "./shared/SubmittableForm";
+import {FormField} from "./shared/FormField";
 
 function FathersDetails() {
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [age, setAge] = useState("");
+    const getInitialDetails = async () => {
+        const result = await axios.get(`http://localhost:3004/father`);
 
-    useEffect(() => {
-        const getFathersDetails = async () => {
-            const res = await axios.get(`http://localhost:3004/father`);
+        if (!result) return {};
 
-            if (res) {
-                const {firstName, lastName, age} = res.data;
+        return result.data;
+    }
 
-                setFirstName(firstName);
-                setLastName(lastName);
-                setAge(age);
-            }
-        }
-
-        getFathersDetails();
-    }, []);
-
-    const onSubmit = event => {
-        event.preventDefault();
-
-        axios.post('http://localhost:3004/father', {
-            firstName, lastName, age
-        });
+    const updateFathersDetails = (fields) => {
+        axios.post('http://localhost:3004/father', fields);
     }
 
     return (
         <BrandedPage>
             <h2>Your Fathers Details</h2>
-            <form onSubmit={onSubmit}>
-                <Fieldset>
-                    <Fieldset.Legend>Please enter his details</Fieldset.Legend>
-                    <div className="form-group">
-                        <Label>
-                            <LabelText>
-                                First Name
-                            </LabelText>
-                            <Input name={"firstName"} defaultValue={firstName}
-                                   onChange={e => setFirstName(e.target.value)}/>
-                        </Label>
-                    </div>
-                    <div className="form-group">
-                        <Label>
-                            <LabelText>
-                                Last Name
-                            </LabelText>
-                            <Input name={"lastName"} defaultValue={lastName}
-                                   onChange={e => setLastName(e.target.value)}/>
-                        </Label>
-                    </div>
-                    <div className="form-group">
-                        <Label>
-                            <LabelText>
-                                Age
-                            </LabelText>
-                            <Input name={"age"} defaultValue={age} onChange={e => setAge(e.target.value)}/>
-                        </Label>
-                    </div>
-                    <div className="form-group">
-                        <Button data-testid="submit-button" type="submit">Submit</Button>
-                    </div>
-                </Fieldset>
-            </form>
+
+            <SubmittableForm loadInitialState={getInitialDetails} onSubmit={updateFathersDetails}>
+                {({fields, handleFormUpdated}) => (
+                    <>
+                        <Fieldset.Legend>Please enter your fathers details</Fieldset.Legend>
+
+                        <FormField label="First Name" name="firstName" value={fields.firstName}
+                                   valueSetter={handleFormUpdated}/>
+
+                        <FormField label="Last Name" name="lastName" value={fields.lastName}
+                                   valueSetter={handleFormUpdated}/>
+
+                        <FormField label="Age" name="age" value={fields.age} valueSetter={handleFormUpdated}/>
+                    </>
+                )}
+            </SubmittableForm>
         </BrandedPage>
     );
 }
