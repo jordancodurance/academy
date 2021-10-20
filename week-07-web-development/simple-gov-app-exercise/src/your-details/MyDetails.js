@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from "react";
 import axios from 'axios';
-import {Button, Fieldset, Footer, Page} from 'govuk-react';
+import {Footer, Page} from 'govuk-react';
 import {FormField} from "./shared/FormField";
+import {SubmittableForm} from "./shared/SubmittableForm";
 
 function MyDetails() {
     const [firstName, setFirstName] = useState("");
@@ -24,9 +25,7 @@ function MyDetails() {
         getMyDetails();
     }, []);
 
-    const onSubmit = event => {
-        event.preventDefault();
-
+    const updateYourDetails = () => {
         axios.post('http://localhost:3004/subject', {
             firstName, lastName, age
         });
@@ -37,22 +36,14 @@ function MyDetails() {
             <Page>
                 <div className="wrapper">
                     <h2>Your Details</h2>
-                    <form onSubmit={onSubmit}>
-                        <Fieldset>
-                            <Fieldset.Legend>Please enter your details</Fieldset.Legend>
 
+                    <SubmittableForm heading="Please enter your details" onSubmit={updateYourDetails}>
+                        <FormField label="First Name" name="firstName" value={firstName} valueSetter={setFirstName}/>
 
-                            <FormField label="First Name" name="firstName" value={firstName}
-                                       valueSetter={setFirstName}/>
+                        <FormField label="Last Name" name="lastName" value={lastName} valueSetter={setLastName}/>
 
-                            <FormField label="Last Name" name="lastName" value={lastName} valueSetter={setLastName}/>
-
-                            <FormField label="Age" name="age" value={age} valueSetter={setAge}/>
-                            <div className="form-group">
-                                <Button data-testid="submit-button" type="submit">Submit</Button>
-                            </div>
-                        </Fieldset>
-                    </form>
+                        <FormField label="Age" name="age" value={age} valueSetter={setAge}/>
+                    </SubmittableForm>
                 </div>
             </Page>
             <Footer/>
