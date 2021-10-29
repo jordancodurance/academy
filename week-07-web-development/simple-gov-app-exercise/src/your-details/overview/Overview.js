@@ -2,10 +2,10 @@ import React, {useEffect, useState} from "react";
 import {Link, useHistory} from "react-router-dom";
 import {BrandedPage} from "../../shared/BrandedPage";
 import Button from "@govuk-react/button";
-import {hasAllCompletedRequiredDetails} from "./DetailsCompletionValidator";
+import {hasAllCompletedRequiredDetails} from "./policy/DetailsCompletionValidator";
 import {ErrorText, H3, LoadingBox, WarningText} from "govuk-react";
 import {completeYourDetails, getFather, getMother, getSubject} from "../shared/YourDetailsApiClient";
-import DetailsOverview from "./DetailsOverview";
+import DetailsOverview from "./component/details-overview/DetailsOverview";
 import {MAIN_ROUTE} from "../../shared/Routes";
 
 function Overview() {

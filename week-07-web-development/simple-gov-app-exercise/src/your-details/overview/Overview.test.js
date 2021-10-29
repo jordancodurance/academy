@@ -4,12 +4,12 @@ import {createMemoryHistory} from "history";
 import {Router} from "react-router";
 import {when} from "jest-when";
 import axios from "axios";
-import * as DetailsCompletionValidator from "./DetailsCompletionValidator";
+import * as DetailsCompletionValidator from "./policy/DetailsCompletionValidator";
 import userEvent from "@testing-library/user-event";
 import {Route} from "react-router-dom";
 
 jest.mock('axios');
-jest.mock('./DetailsCompletionValidator.js');
+jest.mock('./policy/DetailsCompletionValidator');
 
 describe('on overview page rendered', () => {
     const history = createMemoryHistory();
