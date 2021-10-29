@@ -4,7 +4,7 @@ import {BrandedPage} from "../../shared/BrandedPage";
 import Button from "@govuk-react/button";
 import {hasAllCompletedRequiredDetails} from "./policy/DetailsCompletionValidator";
 import {ErrorText, H3, LoadingBox, WarningText} from "govuk-react";
-import {completeYourDetails, getFather, getMother, getSubject} from "../shared/YourDetailsApiClient";
+import {completeYourDetails, getFather, getMother, getSubject} from "../shared/api/YourDetailsApiClient";
 import DetailsOverview from "./component/details-overview/DetailsOverview";
 import {MAIN_ROUTE} from "../../shared/Routes";
 import {YOUR_DETAILS_SUCCESSFUL_SUBMISSION} from "../YourDetailsRoutes";

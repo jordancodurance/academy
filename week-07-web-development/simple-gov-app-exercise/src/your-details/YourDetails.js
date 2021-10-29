@@ -1,9 +1,9 @@
 import React, {useState} from "react";
 import {ErrorText, Fieldset} from 'govuk-react';
-import {FormField} from "./shared/FormField";
-import {SubmittableForm} from "./shared/SubmittableForm";
+import {FormField} from "./shared/component/FormField";
+import {SubmittableForm} from "./shared/component/SubmittableForm";
 import {BrandedPage} from "../shared/BrandedPage";
-import {getSubject, updateSubject} from "./shared/YourDetailsApiClient";
+import {getSubject, updateSubject} from "./shared/api/YourDetailsApiClient";
 import {useHistory} from "react-router-dom";
 import {determineNextRoute} from "./shared/policy/YourDetailsNavigationProvider";
 
