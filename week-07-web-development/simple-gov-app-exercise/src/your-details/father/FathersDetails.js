@@ -1,28 +1,16 @@
 import React from "react";
-import axios from 'axios';
 import {Fieldset} from 'govuk-react';
 import {BrandedPage} from "../../shared/BrandedPage";
 import {SubmittableForm} from "../shared/SubmittableForm";
 import {FormField} from "../shared/FormField";
+import {getFather, updateFather} from "../shared/YourDetailsApi";
 
 function FathersDetails() {
-    const getInitialDetails = async () => {
-        const result = await axios.get(`http://localhost:3004/father`);
-
-        if (!result) return {};
-
-        return result.data;
-    }
-
-    const updateFathersDetails = (fields) => {
-        axios.post('http://localhost:3004/father', fields);
-    }
-
     return (
         <BrandedPage>
             <h2>Your Fathers Details</h2>
 
-            <SubmittableForm loadInitialState={getInitialDetails} onSubmit={updateFathersDetails}>
+            <SubmittableForm loadInitialState={getFather} onSubmit={updateFather}>
                 {({fields, handleFormUpdated}) => (
                     <>
                         <Fieldset.Legend>Please enter your fathers details</Fieldset.Legend>

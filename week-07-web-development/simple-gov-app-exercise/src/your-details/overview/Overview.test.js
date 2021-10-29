@@ -9,7 +9,7 @@ import userEvent from "@testing-library/user-event";
 import {Route} from "react-router-dom";
 
 jest.mock('axios');
-jest.mock('./domain/DetailsCompletionValidator.js');
+jest.mock('./DetailsCompletionValidator.js');
 
 describe('on overview page rendered', () => {
     const history = createMemoryHistory();

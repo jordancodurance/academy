@@ -5,6 +5,7 @@ import Button from "@govuk-react/button";
 import axios from 'axios';
 import {hasCompletedRequiredDetails} from "./DetailsCompletionValidator";
 import {ErrorText, WarningText} from "govuk-react";
+import {getFather, getMother, getSubject} from "../shared/YourDetailsApi";
 
 function Overview() {
     const history = useHistory();
@@ -24,14 +25,14 @@ function Overview() {
     }, [])
 
     const retrieveCompletedDetails = async () => {
-        const subject = await axios.get('http://localhost:3004/subject');
-        const father = await axios.get('http://localhost:3004/father');
-        const mother = await axios.get('http://localhost:3004/mother');
+        const subject = await getSubject();
+        const father = await getFather();
+        const mother = await getMother();
 
         return {
-            subject: subject.data,
-            father: father.data,
-            mother: mother.data
+            subject,
+            father,
+            mother
         };
     };
 
