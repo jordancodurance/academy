@@ -3,13 +3,19 @@ import {render, screen} from "@testing-library/react";
 import {when} from "jest-when";
 import * as axios from "axios";
 import userEvent from "@testing-library/user-event";
+import * as YourDetailsNavigationProvider from "../shared/policy/YourDetailsNavigationProvider";
+import {Route, Router} from "react-router-dom";
+import {createMemoryHistory} from "history";
 
 jest.mock('axios');
+jest.mock('../shared/policy/YourDetailsNavigationProvider');
 
 describe('on mothers details render', () => {
+    const history = createMemoryHistory();
+
     describe('and no details fetched', () => {
         it('should not pre-fill the form', async () => {
-            await render(<MothersDetails/>)
+            await renderMothersDetails();
 
             await expectInputToHaveValue('First Name', '');
             await expectInputToHaveValue('Last Name', '');
@@ -29,7 +35,7 @@ describe('on mothers details render', () => {
                 }
             });
 
-            await render(<MothersDetails/>);
+            await renderMothersDetails();
 
             await expectInputToHaveValue('First Name', 'Jane');
             await expectInputToHaveValue('Last Name', 'Joe');
@@ -38,24 +44,58 @@ describe('on mothers details render', () => {
         });
     });
 
-    describe('submit button pressed', () => {
-        it('should persist the details', async () => {
-            await render(<MothersDetails/>);
-            await inputText('First Name', 'John');
+    describe('and submit button pressed', () => {
+        const expectedMother = {
+            firstName: 'Joanna',
+            lastName: 'Joe',
+            maidenName: 'James',
+            age: '51',
+        };
+
+        beforeEach(async () => {
+            await renderMothersDetails();
+            await inputText('First Name', 'Joanna');
             await inputText('Last Name', 'Joe');
             await inputText('Maiden Name', 'James');
-            await inputText('Age', '20');
+            await inputText('Age', '51');
+        });
 
-            screen.getByText('Submit', {selector: 'button'}).click();
+        describe('and unable to submit mothers details', () => {
+            it('should show error', async () => {
+                when(axios.post).calledWith('http://localhost:3004/mother', expectedMother).mockRejectedValue({});
 
-            expect(axios.post).toBeCalledWith('http://localhost:3004/mother', {
-                firstName: 'John',
-                lastName: 'Joe',
-                maidenName: 'James',
-                age: '20',
+                await clickSubmitButton();
+
+                expect(await screen.findByText('Unable to submit mothers details due to a network error')).toBeInTheDocument();
             });
         });
+
+        describe('and able to submit mothers details', () => {
+            it('should go to next route', async () => {
+                when(axios.post).calledWith('http://localhost:3004/mother', expectedMother).mockResolvedValue({});
+                when(YourDetailsNavigationProvider.determineNextRoute).calledWith("/").mockReturnValue("/next-route");
+
+                await clickSubmitButton();
+
+                expect(history.location.pathname).toBe("/next-route");
+            });
+        });
+
+        const clickSubmitButton = async () => {
+            const button = await screen.findByText('Submit', {selector: 'button'});
+            userEvent.click(button);
+        };
     });
+
+    const renderMothersDetails = async () => {
+        await render(
+            <Router history={history}>
+                <Route>
+                    <MothersDetails/>
+                </Route>
+            </Router>
+        );
+    };
 
     const expectInputToHaveValue = async (labelText, value) => {
         const input = await findInput(labelText);

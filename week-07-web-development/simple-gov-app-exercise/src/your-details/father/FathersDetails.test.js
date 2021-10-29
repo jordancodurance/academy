@@ -55,7 +55,7 @@ describe('on fathers details render', () => {
             await inputText('Age', '56');
         });
 
-        describe('and unable to submit your details', () => {
+        describe('and unable to submit fathers details', () => {
             it('should show error', async () => {
                 when(axios.post).calledWith('http://localhost:3004/father', expectedFather).mockRejectedValue({});
 
@@ -65,7 +65,7 @@ describe('on fathers details render', () => {
             });
         });
 
-        describe('and able to submit your details', () => {
+        describe('and able to submit fathers details', () => {
             it('should go to next route', async () => {
                 when(axios.post).calledWith('http://localhost:3004/father', expectedFather).mockResolvedValue({});
                 when(YourDetailsNavigationProvider.determineNextRoute).calledWith("/").mockReturnValue("/next-route");

@@ -1,16 +1,34 @@
-import React from "react";
-import {Fieldset} from 'govuk-react';
+import React, {useState} from "react";
+import {ErrorText, Fieldset} from 'govuk-react';
 import {BrandedPage} from "../../shared/BrandedPage";
 import {SubmittableForm} from "../shared/SubmittableForm";
 import {FormField} from "../shared/FormField";
 import {getMother, updateMother} from "../shared/YourDetailsApiClient";
+import {useHistory} from "react-router-dom";
+import {determineNextRoute} from "../shared/policy/YourDetailsNavigationProvider";
 
 function MothersDetails() {
+    const history = useHistory();
+    const [error, setError] = useState(undefined);
+
+    const updateMothersDetails = (fields) => {
+        updateMother(fields)
+            .then(() => {
+                const nextRoute = determineNextRoute(history.location.pathname);
+                history.push(nextRoute);
+            })
+            .catch(() => setError("Unable to submit mothers details due to a network error"))
+    }
+
     return (
         <BrandedPage>
             <h2>Your Mothers Details</h2>
 
-            <SubmittableForm loadInitialState={getMother} onSubmit={updateMother}>
+            {error &&
+            <ErrorText>{error}</ErrorText>
+            }
+
+            <SubmittableForm loadInitialState={getMother} onSubmit={updateMothersDetails}>
                 {({fields, handleFormUpdated}) => (
                     <>
                         <Fieldset.Legend>Please enter your mothers details</Fieldset.Legend>
