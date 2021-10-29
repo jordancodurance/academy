@@ -65,7 +65,7 @@ describe('on overview page rendered', () => {
 
                 await clickButton('Submit Your Details');
 
-                expectPathNameToBe('/successful-submission');
+                expectPathNameToBe('/your-details/successful-submission');
             });
         });
     });
