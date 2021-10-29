@@ -2,12 +2,12 @@ import React from "react";
 import {Link} from "react-router-dom";
 
 function HomepageLink(props) {
-    const {header, name, route} = props;
+    const {header, text, route} = props;
 
     return (
         <div>
             <h3>{header}</h3>
-            <Link to={route}>{name}</Link>
+            <Link to={route}>{text}</Link>
         </div>
     )
 }

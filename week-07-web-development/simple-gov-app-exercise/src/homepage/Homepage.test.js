@@ -14,7 +14,7 @@ describe('on homepage rendered', () => {
         );
     });
 
-    describe('on your details button clicked', () => {
+    describe('on your details link clicked', () => {
         it('should go to your details page', () => {
             clickLink('Your details page');
 
@@ -22,7 +22,7 @@ describe('on homepage rendered', () => {
         });
     });
 
-    describe('on father details button clicked', () => {
+    describe('on father details link clicked', () => {
         it('should go to father details page', () => {
             clickLink('Your fathers details page');
 
@@ -30,11 +30,19 @@ describe('on homepage rendered', () => {
         });
     });
 
-    describe('on mother details button clicked', () => {
+    describe('on mother details link clicked', () => {
         it('should go to mother details page', () => {
             clickLink('Your mothers details page');
 
             expectPathNameToBe('/your-details/mother');
+        });
+    });
+
+    describe('on overview link clicked', () => {
+        it('should go to your details overview page', () => {
+            clickLink('View and finalise all of your details');
+
+            expectPathNameToBe('/your-details/overview');
         });
     });
 

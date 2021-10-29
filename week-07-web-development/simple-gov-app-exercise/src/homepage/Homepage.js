@@ -2,7 +2,12 @@ import React from "react";
 import {InsetText, LeadParagraph} from 'govuk-react'
 import {BrandedPage} from "../shared/BrandedPage";
 import {HomepageLink} from "./HomepageLink";
-import {YOUR_DETAILS_ROUTE, YOUR_FATHER_ROUTE, YOUR_MOTHER_ROUTE} from "../your-details/YourDetailsRoutes";
+import {
+    YOUR_DETAILS_OVERVIEW_ROUTE,
+    YOUR_DETAILS_ROUTE,
+    YOUR_FATHER_ROUTE,
+    YOUR_MOTHER_ROUTE
+} from "../your-details/YourDetailsRoutes";
 
 function Homepage() {
     return (
@@ -18,9 +23,10 @@ function Homepage() {
             <p>You will be asked basic information about yourself and your parents. You can review and amend your
                 answers before submitting them.</p>
 
-            <HomepageLink header="Your details:" name="Your details page" route={YOUR_DETAILS_ROUTE}/>
-            <HomepageLink header="Your fathers details:" name="Your fathers details page" route={YOUR_FATHER_ROUTE}/>
-            <HomepageLink header="Your mothers details:" name="Your mothers details page" route={YOUR_MOTHER_ROUTE}/>
+            <HomepageLink header="Your details:" text="Your details page" route={YOUR_DETAILS_ROUTE}/>
+            <HomepageLink header="Your fathers details:" text="Your fathers details page" route={YOUR_FATHER_ROUTE}/>
+            <HomepageLink header="Your mothers details:" text="Your mothers details page" route={YOUR_MOTHER_ROUTE}/>
+            <HomepageLink header="Overview" text="View and finalise all of your details" route={YOUR_DETAILS_OVERVIEW_ROUTE}/>
         </BrandedPage>
     );
 }
