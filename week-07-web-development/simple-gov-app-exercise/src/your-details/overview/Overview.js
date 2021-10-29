@@ -7,6 +7,7 @@ import {ErrorText, H3, LoadingBox, WarningText} from "govuk-react";
 import {completeYourDetails, getFather, getMother, getSubject} from "../shared/YourDetailsApiClient";
 import DetailsOverview from "./component/details-overview/DetailsOverview";
 import {MAIN_ROUTE} from "../../shared/Routes";
+import {YOUR_DETAILS_SUCCESSFUL_SUBMISSION} from "../YourDetailsRoutes";
 
 function Overview() {
     const history = useHistory();
@@ -39,7 +40,7 @@ function Overview() {
 
     async function attemptSubmit() {
         await completeYourDetails()
-            .then(() => history.push('/successful-submission'))
+            .then(() => history.push(YOUR_DETAILS_SUCCESSFUL_SUBMISSION))
             .catch(() => setError({
                 type: "network-error",
                 message: "Unable to submit your details due to a network error"
