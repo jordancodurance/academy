@@ -1,4 +1,4 @@
-import {hasCompletedRequiredDetails} from "./DetailsCompletionValidator";
+import {hasAllCompletedRequiredDetails} from "./DetailsCompletionValidator";
 
 describe('on determining if details are complete', () => {
     const subject = {
@@ -31,12 +31,12 @@ describe('on determining if details are complete', () => {
         {subject: {}, father: father, mother: mother}
     ])
     ('should not be complete with any required sections incomplete', (details) => {
-        expect(hasCompletedRequiredDetails(details)).toBe(false);
+        expect(hasAllCompletedRequiredDetails(details)).toBe(false);
     });
 
     it('should be complete with all required sections complete', () => {
         const details = {subject: subject, father: father, mother: mother};
 
-        expect(hasCompletedRequiredDetails(details)).toBe(true);
+        expect(hasAllCompletedRequiredDetails(details)).toBe(true);
     });
 });

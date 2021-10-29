@@ -3,9 +3,10 @@ import {Link, useHistory} from "react-router-dom";
 import {BrandedPage} from "../../shared/BrandedPage";
 import Button from "@govuk-react/button";
 import axios from 'axios';
-import {hasCompletedRequiredDetails} from "./DetailsCompletionValidator";
+import {hasAllCompletedRequiredDetails} from "./DetailsCompletionValidator";
 import {ErrorText, WarningText} from "govuk-react";
 import {getFather, getMother, getSubject} from "../shared/YourDetailsApi";
+import DetailsOverview from "./DetailsOverview";
 
 function Overview() {
     const history = useHistory();
@@ -14,7 +15,7 @@ function Overview() {
 
     useEffect(() => {
         retrieveCompletedDetails().then(details => {
-            if (!hasCompletedRequiredDetails(details))
+            if (!hasAllCompletedRequiredDetails(details))
                 setError({
                     type: "warning",
                     message: "Form cannot be submitted until all required fields are filled"
@@ -65,6 +66,8 @@ function Overview() {
             {error && error.type === "warning" &&
             <WarningText>{error.message}</WarningText>
             }
+
+            <DetailsOverview details={details}/>
 
             <Button onClick={attemptSubmit} disabled={error && error.type === "warning"}>Submit Your Details</Button>
         </BrandedPage>

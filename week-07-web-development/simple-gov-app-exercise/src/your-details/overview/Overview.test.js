@@ -84,13 +84,13 @@ describe('on overview page rendered', () => {
     const withInvalidDetailsRetrieved = () => {
         const expectedDetails = buildExpectedRetrievedDetails();
         withExpectedDetailsRetrieved(expectedDetails);
-        when(DetailsCompletionValidator.hasCompletedRequiredDetails).calledWith(expectedDetails).mockReturnValue(false);
+        when(DetailsCompletionValidator.hasAllCompletedRequiredDetails).calledWith(expectedDetails).mockReturnValue(false);
     };
 
     const withValidDetailsRetrieved = () => {
         const expectedDetails = buildExpectedRetrievedDetails();
         withExpectedDetailsRetrieved(expectedDetails);
-        when(DetailsCompletionValidator.hasCompletedRequiredDetails).calledWith(expectedDetails).mockReturnValue(true);
+        when(DetailsCompletionValidator.hasAllCompletedRequiredDetails).calledWith(expectedDetails).mockReturnValue(true);
     };
 
     const buildExpectedRetrievedDetails = () => ({
