@@ -18,7 +18,7 @@ describe('on homepage rendered', () => {
         it('should go to your details page', () => {
             clickLink('Your details page');
 
-            expectPathNameToBe('/my-details');
+            expectPathNameToBe('/your-details');
         });
     });
 
@@ -26,7 +26,7 @@ describe('on homepage rendered', () => {
         it('should go to father details page', () => {
             clickLink('Your fathers details page');
 
-            expectPathNameToBe('/fathers-details');
+            expectPathNameToBe('/your-details/father');
         });
     });
 
@@ -34,7 +34,7 @@ describe('on homepage rendered', () => {
         it('should go to mother details page', () => {
             clickLink('Your mothers details page');
 
-            expectPathNameToBe('/mothers-details');
+            expectPathNameToBe('/your-details/mother');
         });
     });
 

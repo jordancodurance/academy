@@ -6,6 +6,7 @@ import {hasAllCompletedRequiredDetails} from "./DetailsCompletionValidator";
 import {ErrorText, H3, LoadingBox, WarningText} from "govuk-react";
 import {completeYourDetails, getFather, getMother, getSubject} from "../shared/YourDetailsApiClient";
 import DetailsOverview from "./DetailsOverview";
+import {MAIN_ROUTE} from "../../shared/Routes";
 
 function Overview() {
     const history = useHistory();
@@ -47,7 +48,7 @@ function Overview() {
 
     return (
         <BrandedPage>
-            <Link to="/">Go back</Link>
+            <Link to={MAIN_ROUTE}>Go back</Link>
 
             {error && error.type !== "warning" &&
             <ErrorText>{error.message}</ErrorText>
