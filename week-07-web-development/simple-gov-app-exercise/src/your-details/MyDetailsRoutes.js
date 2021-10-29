@@ -2,6 +2,7 @@ import { MyDetails } from './MyDetails'
 import { Route, Switch } from "react-router-dom";
 import {FathersDetails} from "./FathersDetails";
 import {MothersDetails} from "./MothersDetails";
+import Overview from "./Overview";
 
 const MyDetailsRoutes = () => {
     return (
@@ -16,6 +17,10 @@ const MyDetailsRoutes = () => {
 
             <Route path="/mothers-details">
                 <MothersDetails />
+            </Route>
+
+            <Route path="/overview">
+                <Overview />
             </Route>
         </Switch>
     );

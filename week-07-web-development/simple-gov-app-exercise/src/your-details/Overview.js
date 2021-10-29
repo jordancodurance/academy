@@ -3,7 +3,7 @@ import {Link, useHistory} from "react-router-dom";
 import {BrandedPage} from "../shared/BrandedPage";
 import Button from "@govuk-react/button";
 import axios from 'axios';
-import {hasCompletedRequiredDetails} from "./shared/DetailsPolicyValidator";
+import {hasCompletedRequiredDetails} from "./domain/DetailsCompletionValidator";
 import {ErrorText, WarningText} from "govuk-react";
 
 function Overview() {
@@ -12,28 +12,29 @@ function Overview() {
     const [details, setDetails] = useState(undefined);
 
     useEffect(() => {
-        const retrieveCompletedDetails = async () => {
-            const subject = await axios.get('http://localhost:3004/subject');
-            const father = await axios.get('http://localhost:3004/father');
-            const mother = await axios.get('http://localhost:3004/mother');
-
-            return {
-                subject: subject.data,
-                father: father.data,
-                mother: mother.data
-            };
-        };
-
         retrieveCompletedDetails().then(details => {
+            console.log(details);
             if (!hasCompletedRequiredDetails(details))
                 setError({
                     type: "warning",
-                    message: "incomplete details"
+                    message: "Form cannot be submitted until all required fields are filled"
                 });
 
             setDetails(details);
         });
     }, [])
+
+    const retrieveCompletedDetails = async () => {
+        const subject = await axios.get('http://localhost:3004/subject');
+        const father = await axios.get('http://localhost:3004/father');
+        const mother = await axios.get('http://localhost:3004/mother');
+
+        return {
+            subject: subject.data,
+            father: father.data,
+            mother: mother.data
+        };
+    };
 
     async function attemptSubmit() {
         await axios
@@ -46,18 +47,25 @@ function Overview() {
     }
 
     if (!details) {
-        return <div>Loading...</div>
+        return (
+            <BrandedPage>
+                <div>Loading...</div>
+            </BrandedPage>
+        );
     }
 
     return (
         <BrandedPage>
+            <Link to="/">Go back</Link>
+
             {error && error.type !== "warning" &&
             <ErrorText>{error.message}</ErrorText>
             }
+
             {error && error.type === "warning" &&
             <WarningText>{error.message}</WarningText>
             }
-            <Link to="/">Go back</Link>
+
             <Button onClick={attemptSubmit} disabled={error && error.type === "warning"}>Submit Your Details</Button>
         </BrandedPage>
     )

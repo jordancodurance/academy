@@ -2,18 +2,19 @@ import {render, screen} from "@testing-library/react";
 import Overview from "./Overview";
 import {createMemoryHistory} from "history";
 import {Router} from "react-router";
-import { when } from "jest-when";
+import {when} from "jest-when";
 import axios from "axios";
-import * as DetailsPolicyValidator from "./shared/DetailsPolicyValidator";
+import * as DetailsCompletionValidator from "./domain/DetailsCompletionValidator";
 import userEvent from "@testing-library/user-event";
+import {Route} from "react-router-dom";
 
 jest.mock('axios');
-jest.mock('./shared/DetailsPolicyValidator');
+jest.mock('./domain/DetailsCompletionValidator.js');
 
-describe('overview page', () => {
+describe('on overview page rendered', () => {
     const history = createMemoryHistory();
 
-    describe('when back button is pressed', () => {
+    describe('and back button is pressed', () => {
         it('takes user back to homepage', async () => {
             withInvalidDetailsRetrieved();
             await renderOverview();
@@ -22,10 +23,10 @@ describe('overview page', () => {
             userEvent.click(button);
 
             expectPathNameToBe('/');
-        })
+        });
     })
 
-    describe('when your details are incomplete', () => {
+    describe('and incomplete details are retrieved', () => {
         beforeEach(async () => {
             withInvalidDetailsRetrieved();
 
@@ -33,11 +34,15 @@ describe('overview page', () => {
         });
 
         it('it should disable the submit button', async () => {
-            expect(await  screen.findByText('Submit Your Details', {selector: 'button'})).toHaveAttribute('disabled');
+            expect(await screen.findByText('Submit Your Details', {selector: 'button'})).toHaveAttribute('disabled');
+        });
+
+        it('it should display a warning', async () => {
+            expect(await screen.findByText('Form cannot be submitted until all required fields are filled')).toBeInTheDocument();
         });
     })
 
-    describe('when submit button is pressed', () => {
+    describe('and submit button is pressed', () => {
         beforeEach(async () => {
             withValidDetailsRetrieved();
 
@@ -65,22 +70,27 @@ describe('overview page', () => {
         });
     });
 
-    const renderOverview = () => render(
-        <Router history={history}>
-            <Overview/>
-        </Router>
-    );
+    const renderOverview = async () => {
+        await render(
+            <Router history={history}>
+                <Route path="/overview">
+                    <Overview/>
+                </Route>
+            </Router>
+        );
+        history.push("/overview");
+    };
 
     const withInvalidDetailsRetrieved = () => {
         const expectedDetails = buildExpectedRetrievedDetails();
         withExpectedDetailsRetrieved(expectedDetails);
-        when(DetailsPolicyValidator.hasCompletedRequiredDetails).calledWith(expectedDetails).mockReturnValue(false);
+        when(DetailsCompletionValidator.hasCompletedRequiredDetails).calledWith(expectedDetails).mockReturnValue(false);
     };
 
     const withValidDetailsRetrieved = () => {
         const expectedDetails = buildExpectedRetrievedDetails();
         withExpectedDetailsRetrieved(expectedDetails);
-        when(DetailsPolicyValidator.hasCompletedRequiredDetails).calledWith(expectedDetails).mockReturnValue(true);
+        when(DetailsCompletionValidator.hasCompletedRequiredDetails).calledWith(expectedDetails).mockReturnValue(true);
     };
 
     const buildExpectedRetrievedDetails = () => ({
@@ -120,5 +130,4 @@ describe('overview page', () => {
         const button = await screen.findByText(text, {selector: 'button'});
         userEvent.click(button);
     };
-})
-
+});
