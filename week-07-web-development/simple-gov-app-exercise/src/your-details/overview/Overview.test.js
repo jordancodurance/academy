@@ -4,7 +4,7 @@ import {createMemoryHistory} from "history";
 import {Router} from "react-router";
 import {when} from "jest-when";
 import axios from "axios";
-import * as DetailsCompletionValidator from "./domain/DetailsCompletionValidator";
+import * as DetailsCompletionValidator from "./DetailsCompletionValidator";
 import userEvent from "@testing-library/user-event";
 import {Route} from "react-router-dom";
 

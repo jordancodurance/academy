@@ -1,14 +1,14 @@
-import { MyDetails } from './MyDetails'
+import { YourDetails } from './YourDetails'
 import { Route, Switch } from "react-router-dom";
-import {FathersDetails} from "./FathersDetails";
-import {MothersDetails} from "./MothersDetails";
-import Overview from "./Overview";
+import {FathersDetails} from "./father/FathersDetails";
+import {MothersDetails} from "./mother/MothersDetails";
+import Overview from "./overview/Overview";
 
-const MyDetailsRoutes = () => {
+const YourDetailsRoutes = () => {
     return (
         <Switch>
-            <Route path="/my-details">
-                <MyDetails />
+            <Route path="/your-details">
+                <YourDetails />
             </Route>
 
             <Route path="/fathers-details">
@@ -26,4 +26,4 @@ const MyDetailsRoutes = () => {
     );
 }
 
-export { MyDetailsRoutes }
+export { YourDetailsRoutes }

@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
 import {Link, useHistory} from "react-router-dom";
-import {BrandedPage} from "../shared/BrandedPage";
+import {BrandedPage} from "../../shared/BrandedPage";
 import Button from "@govuk-react/button";
 import axios from 'axios';
-import {hasCompletedRequiredDetails} from "./domain/DetailsCompletionValidator";
+import {hasCompletedRequiredDetails} from "./DetailsCompletionValidator";
 import {ErrorText, WarningText} from "govuk-react";
 
 function Overview() {
@@ -13,7 +13,6 @@ function Overview() {
 
     useEffect(() => {
         retrieveCompletedDetails().then(details => {
-            console.log(details);
             if (!hasCompletedRequiredDetails(details))
                 setError({
                     type: "warning",

@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
 import axios from 'axios';
 import {Button, Fieldset, Input, Label, LabelText} from 'govuk-react';
-import {BrandedPage} from "../shared/BrandedPage";
-import {SubmittableForm} from "./shared/SubmittableForm";
-import {FormField} from "./shared/FormField";
+import {BrandedPage} from "../../shared/BrandedPage";
+import {SubmittableForm} from "../shared/SubmittableForm";
+import {FormField} from "../shared/FormField";
 
 function MothersDetails() {
     const getInitialDetails = async () => {
