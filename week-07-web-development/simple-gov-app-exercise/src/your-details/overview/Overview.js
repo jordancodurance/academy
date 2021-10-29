@@ -5,7 +5,7 @@ import Button from "@govuk-react/button";
 import axios from 'axios';
 import {hasAllCompletedRequiredDetails} from "./DetailsCompletionValidator";
 import {ErrorText, H1, LoadingBox, WarningText} from "govuk-react";
-import {getFather, getMother, getSubject} from "../shared/YourDetailsApi";
+import {completeYourDetails, getFather, getMother, getSubject} from "../shared/YourDetailsApiClient";
 import DetailsOverview from "./DetailsOverview";
 
 function Overview() {
@@ -38,8 +38,7 @@ function Overview() {
     };
 
     async function attemptSubmit() {
-        await axios
-            .post('http://localhost:3004/your-details/complete')
+        await completeYourDetails()
             .then(() => history.push('/successful-submission'))
             .catch(() => setError({
                 type: "network-error",

@@ -3,7 +3,7 @@ import {Fieldset} from 'govuk-react';
 import {BrandedPage} from "../../shared/BrandedPage";
 import {SubmittableForm} from "../shared/SubmittableForm";
 import {FormField} from "../shared/FormField";
-import {getFather, updateFather} from "../shared/YourDetailsApi";
+import {getFather, updateFather} from "../shared/YourDetailsApiClient";
 
 function FathersDetails() {
     return (

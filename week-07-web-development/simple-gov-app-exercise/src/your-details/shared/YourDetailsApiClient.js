@@ -12,6 +12,8 @@ export const getMother = async () => await getDetails("mother")
 
 export const updateMother = (details) => updateDetails("mother", details)
 
+export const completeYourDetails = () => axios.post('http://localhost:3004/your-details/complete')
+
 async function getDetails(endpoint) {
     const result = await axios.get(`http://localhost:3004/${endpoint}`);
 
