@@ -2,9 +2,8 @@ import React, {useEffect, useState} from "react";
 import {Link, useHistory} from "react-router-dom";
 import {BrandedPage} from "../../shared/BrandedPage";
 import Button from "@govuk-react/button";
-import axios from 'axios';
 import {hasAllCompletedRequiredDetails} from "./DetailsCompletionValidator";
-import {ErrorText, H1, LoadingBox, WarningText} from "govuk-react";
+import {ErrorText, H3, LoadingBox, WarningText} from "govuk-react";
 import {completeYourDetails, getFather, getMother, getSubject} from "../shared/YourDetailsApiClient";
 import DetailsOverview from "./DetailsOverview";
 
@@ -46,16 +45,6 @@ function Overview() {
             }))
     }
 
-    if (!details) {
-        return (
-            <BrandedPage>
-                <LoadingBox loading>
-                    <H1>Loading Your Details status</H1>
-                </LoadingBox>
-            </BrandedPage>
-        );
-    }
-
     return (
         <BrandedPage>
             <Link to="/">Go back</Link>
@@ -68,7 +57,10 @@ function Overview() {
             <WarningText>{error.message}</WarningText>
             }
 
-            <DetailsOverview details={details}/>
+            {!details
+                ? <LoadingBox loading><H3>Loading Your Details status</H3></LoadingBox>
+                : <DetailsOverview details={details}/>
+            }
 
             <Button onClick={attemptSubmit} disabled={error && error.type === "warning"}>Submit Your Details</Button>
         </BrandedPage>
