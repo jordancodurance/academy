@@ -4,7 +4,7 @@ import {BrandedPage} from "../../shared/BrandedPage";
 import Button from "@govuk-react/button";
 import axios from 'axios';
 import {hasAllCompletedRequiredDetails} from "./DetailsCompletionValidator";
-import {ErrorText, WarningText} from "govuk-react";
+import {ErrorText, H1, LoadingBox, WarningText} from "govuk-react";
 import {getFather, getMother, getSubject} from "../shared/YourDetailsApi";
 import DetailsOverview from "./DetailsOverview";
 
@@ -50,7 +50,9 @@ function Overview() {
     if (!details) {
         return (
             <BrandedPage>
-                <div>Loading...</div>
+                <LoadingBox loading>
+                    <H1>Loading Your Details status</H1>
+                </LoadingBox>
             </BrandedPage>
         );
     }

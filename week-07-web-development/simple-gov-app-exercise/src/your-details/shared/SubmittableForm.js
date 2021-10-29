@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Button, Fieldset} from "govuk-react";
+import {Button, Fieldset, LoadingBox} from "govuk-react";
 
 function SubmittableForm(props) {
     const {onSubmit, loadInitialState, children} = props;
@@ -7,7 +7,7 @@ function SubmittableForm(props) {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-          setInitialFields();
+        setInitialFields();
     }, []);
 
     const setInitialFields = () => {
@@ -31,25 +31,23 @@ function SubmittableForm(props) {
         });
     };
 
-    if (isLoading) {
-        return <div>Loading...</div>
-    }
-
     return (
-        <form onSubmit={onFormSubmit}>
-            <Fieldset>
-                {
-                    children({
-                        fields,
-                        handleFormUpdated: updateForm
-                    })
-                }
+        <LoadingBox loading={isLoading}>
+            <form onSubmit={onFormSubmit}>
+                <Fieldset>
+                    {
+                        children({
+                            fields,
+                            handleFormUpdated: updateForm
+                        })
+                    }
 
-                <div className="form-group">
-                    <Button type="submit">Submit</Button>
-                </div>
-            </Fieldset>
-        </form>
+                    <div className="form-group">
+                        <Button type="submit">Submit</Button>
+                    </div>
+                </Fieldset>
+            </form>
+        </LoadingBox>
     );
 }
 
