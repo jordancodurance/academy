@@ -14,7 +14,8 @@ function YourDetails() {
     const updateYourDetails = (fields) => {
         updateSubject(fields)
             .then(() => {
-                const nextRoute = determineNextRoute(history.location.pathname);
+                const currentRoute = history.location.pathname;
+                const nextRoute = determineNextRoute(currentRoute);
                 history.push(nextRoute);
             })
             .catch(() => setError("Unable to submit your details due to a network error"))
