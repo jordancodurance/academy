@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Link, useHistory} from "react-router-dom";
 import {BrandedPage} from "../../shared/BrandedPage";
 import Button from "@govuk-react/button";
-import {hasAllCompletedRequiredDetails} from "./policy/DetailsCompletionValidator";
+import {hasAllCompletedRequiredDetails} from "./domain/DetailsCompletionValidator";
 import {ErrorText, H3, LoadingBox, WarningText} from "govuk-react";
 import {completeYourDetails, getFather, getMother, getSubject} from "../shared/api/YourDetailsApiClient";
 import DetailsOverview from "./component/details-overview/DetailsOverview";

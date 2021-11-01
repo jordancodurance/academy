@@ -5,10 +5,10 @@ import * as axios from "axios";
 import userEvent from "@testing-library/user-event";
 import {Route, Router} from "react-router-dom";
 import {createMemoryHistory} from "history";
-import * as YourDetailsNavigationProvider from "../shared/policy/YourDetailsNavigationProvider";
+import * as YourDetailsNavigationProvider from "../shared/domain/YourDetailsNavigationProvider";
 
 jest.mock('axios');
-jest.mock('../shared/policy/YourDetailsNavigationProvider');
+jest.mock('../shared/domain/YourDetailsNavigationProvider');
 
 describe('on fathers details render', () => {
     const history = createMemoryHistory();

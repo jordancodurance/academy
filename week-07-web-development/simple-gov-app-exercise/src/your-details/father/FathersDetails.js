@@ -5,7 +5,7 @@ import {SubmittableForm} from "../shared/component/SubmittableForm";
 import {FormField} from "../shared/component/FormField";
 import {getFather, updateFather} from "../shared/api/YourDetailsApiClient";
 import {useHistory} from "react-router-dom";
-import {determineNextRoute} from "../shared/policy/YourDetailsNavigationProvider";
+import {determineNextRoute} from "../shared/domain/YourDetailsNavigationProvider";
 
 function FathersDetails() {
     const history = useHistory();

@@ -5,7 +5,7 @@ import {SubmittableForm} from "./shared/component/SubmittableForm";
 import {BrandedPage} from "../shared/BrandedPage";
 import {getSubject, updateSubject} from "./shared/api/YourDetailsApiClient";
 import {useHistory} from "react-router-dom";
-import {determineNextRoute} from "./shared/policy/YourDetailsNavigationProvider";
+import {determineNextRoute} from "./shared/domain/YourDetailsNavigationProvider";
 
 function YourDetails() {
     const history = useHistory();

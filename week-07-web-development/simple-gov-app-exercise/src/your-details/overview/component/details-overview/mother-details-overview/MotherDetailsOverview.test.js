@@ -1,12 +1,12 @@
 import {render, screen} from "@testing-library/react";
 import {when} from "jest-when";
-import * as DetailsCompletionValidator from "../../../policy/DetailsCompletionValidator";
+import * as DetailsCompletionValidator from "../../../domain/DetailsCompletionValidator";
 import MotherDetailsOverview from "./MotherDetailsOverview";
 import {createMemoryHistory} from "history";
 import {Router} from "react-router-dom";
 import userEvent from "@testing-library/user-event";
 
-jest.mock('../../../policy/DetailsCompletionValidator');
+jest.mock('../../../domain/DetailsCompletionValidator');
 
 describe('on mother details overview rendered', () => {
     const history = createMemoryHistory();

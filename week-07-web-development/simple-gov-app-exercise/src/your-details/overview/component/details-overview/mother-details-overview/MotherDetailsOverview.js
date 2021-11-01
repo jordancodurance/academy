@@ -8,7 +8,7 @@ import {
 import {YOUR_MOTHER_ROUTE} from "../../../../YourDetailsRoutes";
 import DetailsMissingWarning from "../details-missing-warning/DetailsMissingWarning";
 import React from "react";
-import {isCompletedPerson} from "../../../policy/DetailsCompletionValidator";
+import {isCompletedPerson} from "../../../domain/DetailsCompletionValidator";
 import {Link} from "react-router-dom";
 
 function MotherDetailsOverview(props) {

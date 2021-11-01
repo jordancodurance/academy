@@ -3,12 +3,12 @@ import {render, screen} from "@testing-library/react";
 import {when} from "jest-when";
 import * as axios from "axios";
 import userEvent from "@testing-library/user-event";
-import * as YourDetailsNavigationProvider from "../shared/policy/YourDetailsNavigationProvider";
+import * as YourDetailsNavigationProvider from "../shared/domain/YourDetailsNavigationProvider";
 import {Route, Router} from "react-router-dom";
 import {createMemoryHistory} from "history";
 
 jest.mock('axios');
-jest.mock('../shared/policy/YourDetailsNavigationProvider');
+jest.mock('../shared/domain/YourDetailsNavigationProvider');
 
 describe('on mothers details render', () => {
     const history = createMemoryHistory();
