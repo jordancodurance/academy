@@ -1,0 +1,12 @@
+{
+  "name": "simple-gov-app-acceptance-tests",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "interactive-mode": "cypress open",
+    "headless-mode": "cypress run"
+  },
+  "devDependencies": {
+    "cypress": "^8.7.0"
+  }
+}

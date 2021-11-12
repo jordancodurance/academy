@@ -1,0 +1,7 @@
+{
+  "baseUrl":"http://127.0.0.1:3000",
+  "fixturesFolder": false,
+  "integrationFolder": "./",
+  "testFiles": "**/*.test.*",
+  "video": false
+}
