@@ -1,0 +1,64 @@
+service: simple-gov-app-exercise
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  environment:
+    DYNAMODB_TABLE: 'simple-gov-app-table-dev'
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource: "arn:aws:dynamodb:us-east-1:*:table/simple-gov-app-table-dev"
+
+plugins:
+  - serverless-plugin-typescript
+
+functions:
+  update:
+    handler: src/handler.update
+    events:
+      - http:
+          path: /subject
+          method: post
+      - http:
+          path: /father
+          method: post
+      - http:
+          path: /mother
+          method: post
+  get:
+    handler: src/handler.get
+    events:
+      - http:
+          path: /subject
+          method: get
+      - http:
+          path: /father
+          method: get
+      - http:
+          path: /mother
+          method: get
+
+resources:
+  Resources:
+    SimpleGovDynamoDataBaseTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: 'simple-gov-app-table-dev'
